@@ -20,7 +20,6 @@ function WorkerDashboard() {
   const [success, setSuccess] = useState('');
   const [showEditForm, setShowEditForm] = useState(false);
   const [workerLocation, setWorkerLocation] = useState(null);
-  const [showProfileModal, setShowProfileModal] = useState(false);
   const [showMapPicker, setShowMapPicker] = useState(false);
 
   // Check authentication and redirect
@@ -260,84 +259,11 @@ function WorkerDashboard() {
     <div className="dashboard">
       <nav className="dashboard-nav">
         <div className="nav-left">
-          <button 
-            className="profile-icon-btn"
-            onClick={() => setShowProfileModal(true)}
-            title="Click to view profile"
-          >
-            {user?.profilePhoto ? (
-              <img src={user.profilePhoto} alt="Profile" className="profile-icon-img" />
-            ) : (
-              <div className="profile-icon-placeholder">👤</div>
-            )}
-          </button>
-          
-          <div className="nav-left-text">
-            <h2>👷 Worker Dashboard</h2>
-            <p>Welcome, {user.name}!</p>
-          </div>
+          <h2>👷 Worker Dashboard</h2>
         </div>
         <button className="logout-btn" onClick={handleLogout}>
           Logout
         </button>
-
-        {/* Profile Modal */}
-        {showProfileModal && (
-          <div className="profile-modal-overlay" onClick={() => setShowProfileModal(false)}>
-            <div className="profile-modal" onClick={(e) => e.stopPropagation()}>
-              <div className="profile-modal-header">
-                <h3>Your Profile</h3>
-                <button 
-                  className="modal-close"
-                  onClick={() => setShowProfileModal(false)}
-                >
-                  ✕
-                </button>
-              </div>
-              <div className="profile-modal-content">
-                {user?.profilePhoto && (
-                  <img src={user.profilePhoto} alt="Profile" className="profile-modal-photo" />
-                )}
-                <div className="profile-info">
-                  <div className="info-row">
-                    <span className="label">Name:</span>
-                    <span className="value">{user?.name || 'Not set'}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Skill:</span>
-                    <span className="value">{workerProfile?.skill ? workerProfile.skill.toUpperCase() : 'Not set'}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Experience:</span>
-                    <span className="value">{workerProfile?.experience ? `${workerProfile.experience} years` : 'Not set'}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Phone:</span>
-                    <span className="value">{currentUser?.phone || 'Not set'}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Location:</span>
-                    <span className="value">{workerProfile?.location || 'Not set'}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Status:</span>
-                    <span className="value"><StatusBadge status={status} /></span>
-                  </div>
-                </div>
-                <button 
-                  className="btn-primary"
-                  onClick={() => {
-                    setShowProfileModal(false);
-                    setShowEditForm(true);
-                  }}
-                  style={{ marginTop: '20px', width: '100%' }}
-                >
-                  ✏️ Edit Profile
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
       </nav>
 
       <div className="dashboard-content">
@@ -416,88 +342,6 @@ function WorkerDashboard() {
                     onCancel={() => setShowMapPicker(false)}
                   />
                 )}
-              </div>
-            </section>
-
-            <section className="profile-section">
-              <div className="profile-card">
-                <div className="card-header">
-                  <h3>Your Profile</h3>
-                  {workerProfile && (
-                    <button className="edit-btn" onClick={() => setShowEditForm(true)}>
-                      Edit Profile
-                    </button>
-                  )}
-                </div>
-                {isProfileIncomplete && (
-                  <div className="warning-message" style={{ marginBottom: '15px', padding: '10px', backgroundColor: '#fff3cd', borderRadius: '4px', color: '#856404' }}>
-                    ⚠️ Your profile is incomplete. Complete your profile to start receiving bookings!
-                  </div>
-                )}
-                <div className="profile-info">
-                  <div className="info-row">
-                    <span className="label">Name:</span>
-                    <span className="value">{user?.name || 'Not set'}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Skill:</span>
-                    <span className="value">{workerProfile?.skill ? workerProfile.skill.toUpperCase() : 'Not set'}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Experience:</span>
-                    <span className="value">{workerProfile?.experience ? `${workerProfile.experience} years` : 'Not set'}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Phone:</span>
-                    <span className="value">{currentUser?.phone || 'Not set'}</span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Location:</span>
-                    <span className="value">
-                      {workerProfile?.location || 'Not set'}
-                      {workerProfile?.latitude && workerProfile?.longitude && (
-                        <span className="coords"> ({workerProfile.latitude.toFixed(4)}, {workerProfile.longitude.toFixed(4)})</span>
-                      )}
-                    </span>
-                  </div>
-                  <div className="info-row">
-                    <span className="label">Status:</span>
-                    <StatusBadge status={status} />
-                  </div>
-                  {workerProfile?.isVerified && (
-                    <div className="info-row">
-                      <span className="label">Verification:</span>
-                      <span className="verified-badge">✅ Verified Worker</span>
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="status-control">
-                <h3>Update Your Status</h3>
-                {isProfileIncomplete && (
-                  <p style={{ color: '#c33', fontSize: '14px', marginBottom: '10px' }}>
-                    ⚠️ Complete your profile first to update status
-                  </p>
-                )}
-                <div className="status-buttons">
-                  <button
-                    className={`status-btn available ${status === 'available' ? 'active' : ''}`}
-                    onClick={() => handleStatusChange('available')}
-                    disabled={isProfileIncomplete}
-                    title={isProfileIncomplete ? 'Complete profile first' : 'Set yourself available'}
-                  >
-                    Set Available
-                  </button>
-                  <button
-                    className={`status-btn busy ${status === 'busy' ? 'active' : ''}`}
-                    onClick={() => handleStatusChange('busy')}
-                    disabled={isProfileIncomplete}
-                    title={isProfileIncomplete ? 'Complete profile first' : 'Set yourself busy'}
-                  >
-                    Set Busy
-                  </button>
-                </div>
               </div>
             </section>
 
