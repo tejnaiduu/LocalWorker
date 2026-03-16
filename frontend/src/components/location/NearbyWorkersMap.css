@@ -1,0 +1,236 @@
+.nearby-workers-map {
+  width: 100%;
+}
+
+/* Location Status Display */
+.location-status {
+  margin-bottom: 15px;
+  padding: 12px 15px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.location-found {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  border: 1px solid #4caf50;
+}
+
+.location-searching {
+  background-color: #fff3e0;
+  color: #e65100;
+  border: 1px solid #ff9800;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.7;
+  }
+}
+
+.map-error,
+.map-error-message {
+  background-color: #fee;
+  color: #c33;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  border: 1px solid #fcc;
+}
+
+.map-error {
+  text-align: center;
+  font-size: 14px;
+}
+
+.map-loading {
+  background-color: #f0f7ff;
+  color: #667eea;
+  padding: 20px;
+  text-align: center;
+  border-radius: 6px;
+  margin-bottom: 15px;
+  font-weight: 500;
+}
+
+/* Info Window Styling */
+.info-window-content {
+  padding: 10px;
+  min-width: 250px;
+  font-family: Arial, sans-serif;
+}
+
+.info-window-content h4 {
+  margin: 0 0 8px 0;
+  font-size: 16px;
+  color: #333;
+  font-weight: 600;
+}
+
+.skill-badge {
+  display: inline-block;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.worker-info {
+  font-size: 13px;
+  line-height: 1.6;
+  margin: 8px 0;
+}
+
+.worker-info p {
+  margin: 6px 0;
+}
+
+.worker-info strong {
+  color: #667eea;
+}
+
+.call-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+}
+
+.call-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+/* Workers List Below Map */
+.workers-list-below-map {
+  margin-top: 30px;
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.workers-list-below-map h3 {
+  margin-top: 0;
+  color: #333;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
+
+.workers-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+}
+
+.worker-list-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.worker-list-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  border-color: #667eea;
+  background: white;
+}
+
+.worker-info-compact {
+  flex: 1;
+}
+
+.worker-info-compact h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.worker-info-compact p {
+  margin: 6px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.worker-info-compact .skill {
+  color: #667eea;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.worker-info-compact .distance {
+  color: #34a853;
+  font-weight: 500;
+}
+
+.worker-info-compact .rating {
+  color: #ff9800;
+  font-weight: 600;
+}
+
+.call-btn-compact {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 13px;
+  white-space: nowrap;
+  margin-left: 15px;
+  transition: all 0.3s ease;
+}
+
+.call-btn-compact:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.no-workers {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+  font-size: 16px;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .workers-list {
+    grid-template-columns: 1fr;
+  }
+
+  .info-window-content {
+    min-width: 200px;
+  }
+
+  .worker-list-item {
+    flex-direction: column;
+  }
+
+  .call-btn-compact {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 12px;
+  }
+}

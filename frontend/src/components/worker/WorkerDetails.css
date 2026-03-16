@@ -1,0 +1,501 @@
+/* Worker Details Modal */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 20px;
+}
+
+.modal-content {
+  background: white;
+  border-radius: 12px;
+  padding: 30px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #999;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.close-btn:hover {
+  color: #333;
+}
+
+.details-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-bottom: 20px;
+  padding-right: 30px;
+}
+
+.header-info {
+  flex: 1;
+}
+
+.details-header h2 {
+  color: #333;
+  margin: 0 0 10px 0;
+  font-size: 24px;
+}
+
+.verified-badge {
+  display: inline-block;
+  background-color: #e8f5e9;
+  color: #2e7d32;
+  padding: 6px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.details-info {
+  margin: 20px 0;
+  line-height: 1.8;
+}
+
+.details-info p {
+  padding: 10px 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 14px;
+  color: #666;
+}
+
+.details-info strong {
+  color: #333;
+  font-weight: 600;
+}
+
+.action-buttons {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+  margin: 25px 0;
+}
+
+.btn-book,
+.btn-call,
+.btn-whatsapp {
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-book {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  grid-column: 1;
+}
+
+.btn-book:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.4);
+}
+
+.btn-book:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.btn-call {
+  background: #667eea;
+  color: white;
+}
+
+.btn-call:hover {
+  background: #5568d3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: white;
+}
+
+.btn-whatsapp:hover {
+  background: #20ba5f;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(37, 211, 102, 0.3);
+}
+
+.reviews-section {
+  margin-top: 30px;
+  padding-top: 20px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.reviews-section h3 {
+  color: #333;
+  margin: 0 0 15px 0;
+  font-size: 16px;
+}
+
+.no-reviews {
+  color: #999;
+  font-size: 14px;
+  text-align: center;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 6px;
+}
+
+.reviews-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.review-item {
+  background-color: #f9f9f9;
+  padding: 15px;
+  border-radius: 6px;
+  border-left: 4px solid #667eea;
+}
+
+.review-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.review-header strong {
+  color: #333;
+  font-size: 14px;
+}
+
+.review-header .rating {
+  font-size: 14px;
+}
+
+.review-item p {
+  margin: 0;
+  color: #666;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.loading {
+  text-align: center;
+  padding: 40px 20px;
+  color: #999;
+}
+
+.alert.error {
+  color: #c33;
+  background-color: #fee;
+  padding: 20px;
+  border-radius: 6px;
+  border-left: 4px solid #c33;
+}
+
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .modal-content {
+    padding: 20px 20px 40px 20px;
+    max-height: 95vh;
+  }
+
+  .close-btn {
+    top: 15px;
+    right: 15px;
+  }
+
+  .details-header {
+    padding-right: 30px;
+  }
+
+  .header-info h2 {
+    font-size: 20px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+  }
+}
+
+/* Worker Details Modal Styles */
+.worker-details-modal {
+  background: white;
+  border-radius: 12px;
+  max-width: 600px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.worker-details-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 30px;
+  border-bottom: 2px solid #f0f0f0;
+  position: relative;
+}
+
+.worker-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 2em;
+  flex-shrink: 0;
+}
+
+.worker-header-info {
+  flex: 1;
+}
+
+.worker-header-info h2 {
+  margin: 0 0 8px 0;
+  color: #333;
+  font-size: 22px;
+}
+
+.worker-skill-badge {
+  display: inline-block;
+  background: #f0f0ff;
+  color: #667eea;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 600;
+  margin-right: 10px;
+}
+
+.verified-tag {
+  display: inline-block;
+  background: #e8f5e9;
+  color: #2e7d32;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 0.9em;
+  font-weight: 600;
+}
+
+.worker-details-body {
+  padding: 30px;
+}
+
+.detail-section {
+  margin-bottom: 25px;
+}
+
+.detail-section h3 {
+  color: #333;
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.detail-section p {
+  color: #666;
+  line-height: 1.6;
+  margin: 0;
+}
+
+.detail-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.detail-item .label {
+  color: #667eea;
+  font-weight: 600;
+  font-size: 0.95em;
+}
+
+.detail-item .value {
+  color: #666;
+  font-weight: 500;
+  text-align: right;
+}
+
+
+/* Worker Rating Section */
+.worker-rating-section {
+  margin: 20px 0;
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #f0f0ff 100%);
+  border-radius: 12px;
+  border: 2px solid #e8e8ff;
+}
+
+.rating-card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.rating-display {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.rating-stars-large {
+  font-size: 2.5em;
+  line-height: 1;
+  display: flex;
+  gap: 5px;
+}
+
+.rating-info {
+  flex: 1;
+}
+
+.rating-value {
+  font-size: 2em;
+  font-weight: 700;
+  color: #667eea;
+  margin-bottom: 5px;
+}
+
+.rating-label {
+  font-size: 0.95em;
+  color: #666;
+  font-weight: 500;
+  margin-bottom: 3px;
+}
+
+.review-count {
+  font-size: 0.85em;
+  color: #999;
+}
+
+.no-rating-card {
+  background: white;
+  padding: 30px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.no-rating-icon {
+  font-size: 3em;
+  margin-bottom: 10px;
+  opacity: 0.5;
+}
+
+.no-rating-text {
+  font-size: 1.1em;
+  color: #666;
+  font-weight: 600;
+  margin-bottom: 5px;
+}
+
+.no-rating-subtitle {
+  font-size: 0.9em;
+  color: #999;
+}
+
+/* Enhanced Reviews Section Styling */
+.reviews-section h3 {
+  color: #333;
+  margin: 0 0 15px 0;
+  font-size: 18px;
+  font-weight: 600;
+  border-bottom: 2px solid #e8e8ff;
+  padding-bottom: 10px;
+}
+
+.reviewer-name {
+  color: #333;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.review-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+
+.review-date {
+  color: #999;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.review-rating {
+  font-size: 1.1em;
+  color: #ffc107;
+  letter-spacing: 2px;
+  white-space: nowrap;
+}
+
+.review-text {
+  color: #555;
+  line-height: 1.6;
+  margin: 10px 0 0 0;
+  font-size: 14px;
+}
+
+.review-item {
+  background-color: #fafafa;
+  padding: 15px;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+  margin-bottom: 12px;
+  transition: all 0.2s ease;
+}
+
+.review-item:hover {
+  background-color: #f5f5f5;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
