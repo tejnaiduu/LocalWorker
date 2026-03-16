@@ -7,6 +7,7 @@ import EmergencyButton from '../../components/shared/EmergencyButton';
 import CustomerProfileForm from '../../components/customer/CustomerProfileForm';
 import BookingForm from '../../components/booking/BookingForm';
 import BookingHistory from '../../components/booking/BookingHistory';
+import LocationMapPicker from '../../components/location/LocationMapPicker';
 import '../shared/Dashboard.css';
 
 function CustomerDashboard() {
@@ -28,6 +29,7 @@ function CustomerDashboard() {
   const [nearbyWorkers, setNearbyWorkers] = useState([]);
   const [showLocationUpdate, setShowLocationUpdate] = useState(false);
   const [showBookingHistory, setShowBookingHistory] = useState(false);
+  const [showMapPicker, setShowMapPicker] = useState(false);
 
   useEffect(() => {
     setProfileData(user);
@@ -74,72 +76,37 @@ function CustomerDashboard() {
     });
   };
 
-  // Update customer location
-  const handleUpdateLocation = async () => {
+  // Update customer location - Open map picker
+  const handleUpdateLocation = () => {
+    setShowMapPicker(true);
+  };
+
+  // Handle location selected from map picker
+  const handleLocationSelect = async (location) => {
     try {
       setLoading(true);
-      if (!navigator.geolocation) {
-        setError('Geolocation not supported');
-        return;
-      }
+      const { lat, lng, location: locationName } = location;
 
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          console.log('📍 Location updated:', { latitude, longitude });
+      // Update profile with new location
+      const response = await api.put('/auth/profile', {
+        name: profileData.name,
+        phone: profileData.phone,
+        location: locationName,
+        latitude: lat,
+        longitude: lng,
+      });
 
-          // Reverse geocode to get location name
-          let locationName = profileData.location;
-          try {
-            const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-            if (googleMapsApiKey) {
-              const geocodingResponse = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${googleMapsApiKey}`
-              );
-              const geocodingData = await geocodingResponse.json();
-              if (geocodingData.results && geocodingData.results.length > 0) {
-                // Extract city/area name from the results
-                const addressComponents = geocodingData.results[0].address_components;
-                const cityComponent = addressComponents.find(comp => 
-                  comp.types.includes('locality') || 
-                  comp.types.includes('administrative_area_level_3') ||
-                  comp.types.includes('administrative_area_level_2')
-                );
-                if (cityComponent) {
-                  locationName = cityComponent.long_name;
-                }
-              }
-            }
-          } catch (geoErr) {
-            console.log('Reverse geocoding failed, keeping existing location');
-          }
-
-          // Update profile with new location
-          const response = await api.put('/auth/profile', {
-            name: profileData.name,
-            phone: profileData.phone,
-            location: locationName,
-            latitude,
-            longitude,
-          });
-
-          setCustomerLocation({ lat: latitude, lng: longitude });
-          setProfileData(response.data.user);
-          setShowLocationUpdate(false);
-          setSuccessMessage(`📍 Location: ${locationName} (${latitude.toFixed(4)}, ${longitude.toFixed(4)}) - Refreshing nearby workers...`);
-          
-          // Refetch workers after location update
-          await fetchWorkers();
-          setLoading(false);
-          setTimeout(() => setSuccessMessage(''), 3000);
-        },
-        (error) => {
-          console.error('Geolocation error:', error);
-          setError('Unable to get location. Make sure you granted permission.');
-          setLoading(false);
-        }
-      );
+      setCustomerLocation({ lat, lng });
+      setProfileData(response.data.user);
+      setShowMapPicker(false);
+      setSuccessMessage(`📍 Location: ${locationName} (${lat.toFixed(4)}, ${lng.toFixed(4)}) - Refreshing nearby workers...`);
+      
+      // Refetch workers after location update
+      await fetchWorkers();
+      setLoading(false);
+      setTimeout(() => setSuccessMessage(''), 3000);
     } catch (err) {
+      console.error('Failed to update location:', err);
       setError('Failed to update location');
       setLoading(false);
     }
@@ -278,7 +245,7 @@ function CustomerDashboard() {
       <div className="dashboard">
         <nav className="dashboard-nav">
           <div className="nav-left">
-            <h2>👤 Customer Dashboard</h2>
+            <h2>Customer Dashboard</h2>
           </div>
         </nav>
         <div className="dashboard-content" style={{ textAlign: 'center', padding: '40px' }}>
@@ -393,11 +360,20 @@ function CustomerDashboard() {
         {!showProfileForm && (
           <>
             <section className="location-update-section">
-              <h3>📍 Your Location</h3>
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Your Location
+              </h3>
               <div className="location-info">
                 {customerLocation ? (
                   <div className="location-details">
-                    <p>✅ Location detected: ({customerLocation.lat.toFixed(4)}, {customerLocation.lng.toFixed(4)})</p>
+                    <p className="location-detected">
+                      <span className="green-dot"></span>
+                      Location detected: ({customerLocation.lat.toFixed(4)}, {customerLocation.lng.toFixed(4)})
+                    </p>
                     <p className="location-text">{profileData?.location || 'Not set'}</p>
                   </div>
                 ) : (
@@ -408,19 +384,33 @@ function CustomerDashboard() {
                   onClick={handleUpdateLocation}
                   disabled={loading}
                 >
-                  {loading ? '📍 Updating...' : '📍 Update My Location Now'}
+                  {loading ? 'Updating...' : 'Update My Location Now'}
                 </button>
+                
+                {/* Map Picker Modal */}
+                {showMapPicker && (
+                  <LocationMapPicker
+                    initialLocation={customerLocation}
+                    onLocationSelect={handleLocationSelect}
+                    onCancel={() => setShowMapPicker(false)}
+                  />
+                )}
               </div>
             </section>
 
             <section className="emergency-section">
-            <h3>🚨 Emergency Services</h3>
-            <div className="emergency-buttons">
-              <EmergencyButton skill="electrician" onSearch={() => handleEmergencySearch('electrician')} />
-              <EmergencyButton skill="plumber" onSearch={() => handleEmergencySearch('plumber')} />
-              <EmergencyButton skill="carpenter" onSearch={() => handleEmergencySearch('carpenter')} />
-            </div>
-          </section>
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#D97706" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
+                  <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                </svg>
+                Emergency Services
+              </h3>
+              <div className="emergency-buttons">
+                <EmergencyButton skill="electrician" onSearch={() => handleEmergencySearch('electrician')} />
+                <EmergencyButton skill="plumber" onSearch={() => handleEmergencySearch('plumber')} />
+                <EmergencyButton skill="carpenter" onSearch={() => handleEmergencySearch('carpenter')} />
+              </div>
+            </section>
           </>
         )}
 
@@ -476,19 +466,22 @@ function CustomerDashboard() {
                     className={`filter-btn ${filter === 'electrician' ? 'active' : ''}`}
                     onClick={() => setFilter('electrician')}
                   >
-                    ⚡ Electrician
+                    <span className="skill-dot electrician"></span>
+                    Electrician
                   </button>
                   <button
                     className={`filter-btn ${filter === 'plumber' ? 'active' : ''}`}
                     onClick={() => setFilter('plumber')}
                   >
-                    🚰 Plumber
+                    <span className="skill-dot plumber"></span>
+                    Plumber
                   </button>
                   <button
                     className={`filter-btn ${filter === 'carpenter' ? 'active' : ''}`}
                     onClick={() => setFilter('carpenter')}
                   >
-                    🪵 Carpenter
+                    <span className="skill-dot carpenter"></span>
+                    Carpenter
                   </button>
                 </div>
               </div>

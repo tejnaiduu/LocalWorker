@@ -267,4 +267,77 @@ router.delete('/users/:id', protect, authorizeAdmin, async (req, res) => {
   }
 });
 
+// GET /api/admin/workers/verify-pending - Get workers awaiting verification
+router.get('/workers/verify-pending', protect, authorizeAdmin, async (req, res) => {
+  try {
+    const pendingWorkers = await Worker.find({
+      profileCompleted: true,
+      $or: [{ isVerified: false }, { isVerified: { $exists: false } }],
+    })
+      .populate('userId', 'name email phone')
+      .select('name skill experience location idProof profileCompleted isVerified idProofApproved createdAt')
+      .sort({ createdAt: 1 });
+
+    res.json({
+      count: pendingWorkers.length,
+      workers: pendingWorkers,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// PUT /api/admin/workers/verify/:id - Verify and approve a worker
+router.put('/workers/verify/:id', protect, authorizeAdmin, async (req, res) => {
+  try {
+    const worker = await Worker.findByIdAndUpdate(
+      req.params.id,
+      {
+        isVerified: true,
+        verified: true, // Keep for backwards compatibility
+        idProofApproved: true,
+      },
+      { new: true }
+    ).populate('userId', 'name email phone');
+
+    if (!worker) {
+      return res.status(404).json({ error: 'Worker not found' });
+    }
+
+    res.json({
+      message: 'Worker verified and approved successfully',
+      worker,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// PUT /api/admin/workers/reject/:id - Reject a worker
+router.put('/workers/reject/:id', protect, authorizeAdmin, async (req, res) => {
+  try {
+    const worker = await Worker.findByIdAndUpdate(
+      req.params.id,
+      {
+        profileCompleted: false,
+        isVerified: false,
+        idProof: null,
+        idProofApproved: false,
+      },
+      { new: true }
+    ).populate('userId', 'name email phone');
+
+    if (!worker) {
+      return res.status(404).json({ error: 'Worker not found' });
+    }
+
+    res.json({
+      message: 'Worker verification rejected. They can resubmit their profile.',
+      worker,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;

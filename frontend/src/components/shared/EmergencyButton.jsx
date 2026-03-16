@@ -4,10 +4,10 @@ import './UIComponents.css';
 function EmergencyButton({ skill, onSearch }) {
   const [searching, setSearching] = useState(false);
 
-  const skillEmojis = {
-    electrician: '⚡',
-    plumber: '🚰',
-    carpenter: '🪵',
+  const skillConfig = {
+    electrician: { icon: '⚡', label: 'Electrician' },
+    plumber: { icon: '🔧', label: 'Plumber' },
+    carpenter: { icon: '🪚', label: 'Carpenter' },
   };
 
   const handleEmergencyClick = async () => {
@@ -19,8 +19,7 @@ function EmergencyButton({ skill, onSearch }) {
     }
   };
 
-  const emoji = skillEmojis[skill] || '⚡';
-  const skillLabel = skill.charAt(0).toUpperCase() + skill.slice(1);
+  const config = skillConfig[skill] || { icon: '⚡', label: skill };
 
   return (
     <button
@@ -35,7 +34,7 @@ function EmergencyButton({ skill, onSearch }) {
         </>
       ) : (
         <>
-          {emoji} Need {skillLabel} NOW
+          {config.icon} Need {config.label} NOW
         </>
       )}
     </button>

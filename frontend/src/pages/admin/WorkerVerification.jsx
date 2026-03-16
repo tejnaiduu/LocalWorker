@@ -16,8 +16,8 @@ function WorkerVerification() {
   const fetchPendingWorkers = async () => {
     try {
       setLoading(true);
-      const response = await api.get('/admin/workers/pending');
-      setWorkers(response.data);
+      const response = await api.get('/admin/workers/verify-pending');
+      setWorkers(response.data.workers || response.data);
     } catch (err) {
       setError(err.response?.data?.error || 'Failed to fetch workers');
     } finally {
@@ -29,8 +29,8 @@ function WorkerVerification() {
     try {
       setError('');
       setSuccess('');
-      await api.put(`/admin/workers/approve/${workerId}`);
-      setSuccess('Worker approved successfully!');
+      await api.put(`/admin/workers/verify/${workerId}`);
+      setSuccess('Worker verified and approved successfully!');
       fetchPendingWorkers();
       setTimeout(() => setSuccess(''), 3000);
     } catch (err) {

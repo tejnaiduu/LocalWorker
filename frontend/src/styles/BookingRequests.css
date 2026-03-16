@@ -1,185 +1,210 @@
-/* Booking Requests Component */
+/* ========================================
+   Booking Requests - Professional Color System
+   ======================================== */
+
+/* Container */
 .booking-requests-container {
-  background: white;
-  border-radius: 12px;
-  padding: 30px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  margin: 25px 0;
+  background: #FFFFFF;
+  border-radius: 10px;
+  padding: 24px;
+  border: 1px solid #E5E7EB;
+  margin: 24px 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
 
+/* Header */
 .booking-requests-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 30px;
-  padding-bottom: 20px;
-  border-bottom: 2px solid #f0f0f0;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .booking-requests-header h2 {
-  color: #333;
+  color: #111827;
   margin: 0;
-  font-size: 24px;
+  font-size: 20px;
+  font-weight: 700;
 }
 
 .booking-summary {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   margin: 0;
 }
 
+/* Summary Badges - Tinted Style */
 .badge {
   display: inline-block;
-  padding: 6px 12px;
-  border-radius: 20px;
-  font-size: 0.85em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 12px;
   font-weight: 600;
-  white-space: nowrap;
+  border: 1px solid transparent;
 }
 
 .badge.pending {
-  background: #fff3cd;
-  color: #856404;
+  background: #EFF6FF;
+  color: #1E40AF;
+  border-color: #BFDBFE;
 }
 
 .badge.accepted {
-  background: #d4edda;
-  color: #155724;
+  background: #F0FDF4;
+  color: #166534;
+  border-color: #BBF7D0;
 }
 
 .badge.completed {
-  background: #cce5ff;
-  color: #004085;
+  background: #F5F3FF;
+  color: #4C1D95;
+  border-color: #DDD6FE;
 }
 
-/* Filter Buttons */
+/* ========================================
+   Tab Bar (Filter Buttons)
+   ======================================== */
+
 .filter-buttons {
   display: flex;
-  gap: 10px;
-  margin-bottom: 25px;
+  gap: 8px;
+  margin-bottom: 20px;
   flex-wrap: wrap;
+  border-bottom: 1px solid #E5E7EB;
+  padding-bottom: 0;
 }
 
 .filter-btn {
   padding: 10px 16px;
-  border: 2px solid #ddd;
-  background: white;
-  border-radius: 8px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
   cursor: pointer;
-  font-size: 0.95em;
+  font-size: 14px;
   font-weight: 600;
-  transition: all 0.3s ease;
-  color: #666;
+  transition: all 0.2s ease;
+  color: #6B7280;
+  position: relative;
+  margin-right: 4px;
 }
 
 .filter-btn:hover {
-  border-color: #667eea;
-  color: #667eea;
+  color: #2563EB;
+  background: #EFF6FF;
 }
 
 .filter-btn.active {
-  background: #667eea;
-  color: white;
-  border-color: #667eea;
+  background: #EFF6FF;
+  color: #1E40AF;
+  border: 1px solid #BFDBFE;
 }
 
-/* Bookings List */
+/* ========================================
+   Bookings List
+   ======================================== */
+
 .bookings-list {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 }
 
+/* Booking Card with Left Border Accent */
 .booking-card {
-  border: 1px solid #e0e0e0;
+  border: 1px solid #E5E7EB;
   border-radius: 10px;
   overflow: hidden;
-  transition: all 0.3s ease;
-  background: white;
+  transition: all 0.2s ease;
+  background: #FFFFFF;
+  border-left: 3px solid #BFDBFE;
 }
 
 .booking-card:hover {
-  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.15);
-  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+/* Left border accent colors matching status badge */
 .booking-card.status-requested {
-  border-left: 4px solid #ffc107;
+  border-left-color: #BFDBFE;
 }
 
 .booking-card.status-accepted {
-  border-left: 4px solid #28a745;
+  border-left-color: #22C55E;
 }
 
 .booking-card.status-completed {
-  border-left: 4px solid #007bff;
-  opacity: 0.9;
+  border-left-color: #8B5CF6;
 }
 
 .booking-card.status-rejected {
-  border-left: 4px solid #dc3545;
-  opacity: 0.85;
+  border-left-color: #EF4444;
 }
 
+/* Card Header */
 .booking-card-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
-  border-bottom: 1px solid #e0e0e0;
+  padding: 16px;
+  background: #F9FAFB;
+  border-bottom: 1px solid #E5E7EB;
 }
 
 .customer-info h3 {
   margin: 0;
-  color: #333;
-  font-size: 18px;
+  color: #111827;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .customer-email {
-  margin: 5px 0 0 0;
-  color: #666;
-  font-size: 0.9em;
+  margin: 4px 0 0 0;
+  color: #6B7280;
+  font-size: 12px;
 }
 
-.status-badge {
-  padding: 8px 16px;
-  border-radius: 20px;
-  font-size: 0.85em;
-  font-weight: 600;
-  white-space: nowrap;
+/* Status Badge - Tinted Style */
+.booking-card-header .status-badge {
+  margin-left: 0;
 }
 
 .status-badge.requested {
-  background: #fff3cd;
-  color: #856404;
+  background: #EFF6FF;
+  color: #1E40AF;
+  border-color: #BFDBFE;
 }
 
 .status-badge.accepted {
-  background: #d4edda;
-  color: #155724;
+  background: #F0FDF4;
+  color: #166534;
+  border-color: #BBF7D0;
 }
 
 .status-badge.completed {
-  background: #cce5ff;
-  color: #004085;
+  background: #F5F3FF;
+  color: #4C1D95;
+  border-color: #DDD6FE;
 }
 
 .status-badge.rejected {
-  background: #f8d7da;
-  color: #721c24;
+  background: #FFF5F5;
+  color: #991B1B;
+  border-color: #FED7D7;
 }
 
+/* Card Details */
 .booking-card-details {
-  padding: 20px;
+  padding: 16px;
 }
 
 .detail-item {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 12px 0;
-  border-bottom: 1px solid #f5f5f5;
+  padding: 8px 0;
+  border-bottom: 1px solid #F3F4F6;
 }
 
 .detail-item:last-child {
@@ -187,139 +212,247 @@
 }
 
 .detail-item .label {
-  color: #667eea;
+  color: #6B7280;
   font-weight: 600;
   flex-shrink: 0;
-  margin-right: 15px;
+  margin-right: 12px;
+  font-size: 13px;
+}
+
+.detail-item .label svg {
+  color: #2563EB;
+  margin-right: 4px;
+  vertical-align: middle;
 }
 
 .detail-item .value {
-  color: #666;
+  color: #374151;
   text-align: right;
   flex-grow: 1;
   word-break: break-word;
+  font-size: 13px;
 }
+
+/* ========================================
+   Worker Rating Display
+   ======================================== */
+
+.worker-own-rating {
+  margin: 0 16px;
+  padding: 12px;
+  background: #F9FAFB;
+  border-radius: 6px;
+  border: 1px solid #E5E7EB;
+  border-left: 3px solid #22C55E;
+}
+
+.rating-summary {
+  display: flex;
+  align-items: center;
+}
+
+.rating-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.rating-badge .rating-stars {
+  font-size: 1.4em;
+  letter-spacing: 2px;
+}
+
+.rating-stars,
+.rating-stars .stars {
+  color: #F59E0B !important;
+}
+
+.no-rating-info .rating-stars {
+  color: #F59E0B !important;
+}
+
+.rating-details {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.rating-details strong {
+  font-size: 1.1em;
+  color: #166534;
+}
+
+.total-reviews {
+  color: #6B7280;
+  font-weight: 500;
+  font-size: 13px;
+}
+
+.no-rating-info {
+  color: #6B7280;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+}
+
+.no-rating-info .rating-stars {
+  color: #F59E0B;
+}
+
+/* ========================================
+   Card Actions
+   ======================================== */
 
 .booking-card-actions {
   display: flex;
-  gap: 10px;
-  padding: 20px;
-  background: #f9f9f9;
-  border-top: 1px solid #e0e0e0;
+  gap: 4px;
+  padding: 16px;
+  background: #F9FAFB;
+  border-top: 1px solid #E5E7EB;
 }
 
-.btn-accept,
-.btn-reject,
-.btn-complete {
+/* Accept Button - Green */
+.btn-accept {
   flex: 1;
-  padding: 12px 16px;
+  padding: 10px 16px;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.95em;
+  font-size: 14px;
   font-weight: 600;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
   text-align: center;
-}
-
-.btn-accept {
-  background: #28a745;
+  background: #16A34A;
   color: white;
 }
 
 .btn-accept:hover {
-  background: #218838;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(40, 167, 69, 0.3);
+  background: #15803D;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(22, 163, 74, 0.3);
 }
 
+/* Reject Button - Red */
 .btn-reject {
-  background: #dc3545;
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-align: center;
+  background: #DC2626;
   color: white;
 }
 
 .btn-reject:hover {
-  background: #c82333;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.3);
+  background: #B91C1C;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(220, 38, 38, 0.3);
 }
 
+/* Complete Button - Primary Blue */
 .btn-complete {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  flex: 1;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  text-align: center;
+  background: #2563EB;
   color: white;
 }
 
 .btn-complete:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+  background: #1D4ED8;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(37, 99, 235, 0.3);
 }
 
+/* Completed/Rejected Text */
 .completed-text,
 .rejected-text {
   flex: 1;
   text-align: center;
-  padding: 12px 16px;
+  padding: 10px 16px;
   font-weight: 600;
-  font-size: 0.95em;
+  font-size: 14px;
 }
 
 .completed-text {
-  color: #155724;
+  color: #166534;
 }
 
 .rejected-text {
-  color: #721c24;
+  color: #991B1B;
 }
 
-/* Empty State */
+/* ========================================
+   Empty State
+   ======================================== */
+
 .no-bookings {
   text-align: center;
-  padding: 60px 20px;
-  color: #999;
+  padding: 48px 20px;
+  color: #6B7280;
 }
 
 .no-bookings p {
   margin: 0;
-  font-size: 1.1em;
+  font-size: 15px;
 }
 
 .no-bookings .subtle {
-  margin-top: 10px;
-  font-size: 0.95em;
-  color: #bbb;
+  margin-top: 8px;
+  font-size: 13px;
+  color: #9CA3AF;
 }
 
 .booking-requests-loading {
   text-align: center;
   padding: 40px;
-  color: #999;
-  font-size: 1.05em;
+  color: #6B7280;
+  font-size: 15px;
 }
 
-.error-message {
-  background: #f8d7da;
-  border: 1px solid #f5c6cb;
-  color: #721c24;
+/* ========================================
+   Messages
+   ======================================== */
+
+.booking-requests-container .error-message {
+  background: #FFF5F5;
+  border: 1px solid #FED7D7;
+  color: #991B1B;
   padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  border-radius: 6px;
+  margin-bottom: 16px;
   font-weight: 500;
 }
 
-.success-message {
-  background: #d4edda;
-  border: 1px solid #c3e6cb;
-  color: #155724;
+.booking-requests-container .success-message {
+  background: #ECFDF5;
+  border: 1px solid #A7F3D0;
+  color: #065F46;
   padding: 12px 16px;
-  border-radius: 8px;
-  margin-bottom: 20px;
+  border-radius: 6px;
+  margin-bottom: 16px;
   font-weight: 500;
 }
 
-/* Responsive */
+/* ========================================
+   Responsive
+   ======================================== */
+
 @media (max-width: 768px) {
   .booking-requests-container {
-    padding: 20px;
+    padding: 16px;
   }
 
   .booking-requests-header {
@@ -335,17 +468,18 @@
 
   .filter-buttons {
     flex-wrap: wrap;
+    gap: 4px;
   }
 
   .filter-btn {
-    font-size: 0.85em;
+    font-size: 13px;
     padding: 8px 12px;
   }
 
   .booking-card-header {
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
+    gap: 8px;
   }
 
   .detail-item {
@@ -355,7 +489,7 @@
 
   .detail-item .label {
     margin-right: 0;
-    margin-bottom: 5px;
+    margin-bottom: 4px;
   }
 
   .detail-item .value {
@@ -372,55 +506,4 @@
     flex: none;
     width: 100%;
   }
-}
-
-/* Worker's Own Rating Display in BookingRequests */
-.worker-own-rating {
-  margin: 15px 0;
-  padding: 15px;
-  background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);
-  border-radius: 8px;
-  border-left: 4px solid #4caf50;
-}
-
-.rating-summary {
-  display: flex;
-  align-items: center;
-}
-
-.rating-badge {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-.rating-badge .rating-stars {
-  font-size: 1.8em;
-  letter-spacing: 3px;
-}
-
-.rating-details {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.rating-details strong {
-  font-size: 1.3em;
-  color: #2e7d32;
-}
-
-.total-reviews {
-  color: #666;
-  font-weight: 500;
-  font-size: 0.95em;
-}
-
-.no-rating-info {
-  color: #666;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 0;
 }

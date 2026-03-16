@@ -1,7 +1,15 @@
 import { useState, useCallback, useEffect, useRef } from 'react';
-import mapboxgl from 'mapbox-gl';
-import 'mapbox-gl/dist/mapbox-gl.css';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 import '../../styles/LocationMapPicker.css';
+
+// Fix for default marker icon issue in Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
   const mapContainer = useRef(null);
@@ -15,27 +23,25 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const mapboxApiKey = import.meta.env.VITE_MAPBOX_API_KEY;
-
-  // Set Mapbox access token
-  mapboxgl.accessToken = mapboxApiKey;
-
-  // Reverse geocode coordinates to get location name using Mapbox Geocoding API
+  // Reverse geocode coordinates to get location name using OpenStreetMap Nominatim API
   const reverseGeocode = useCallback(async (lat, lng) => {
     try {
-      if (!mapboxApiKey) {
-        setLocationName(`${lat.toFixed(4)}, ${lng.toFixed(4)}`);
-        return;
-      }
-
       const response = await fetch(
-        `https://api.mapbox.com/geocoding/v5/mapbox.places/${lng},${lat}.json?access_token=${mapboxApiKey}`
+        `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
       );
       const data = await response.json();
 
-      if (data.features && data.features.length > 0) {
-        const placeName = data.features[0].place_name;
-        setLocationName(placeName);
+      if (data.address) {
+        const addressParts = [];
+        if (data.address.road) addressParts.push(data.address.road);
+        if (data.address.city) addressParts.push(data.address.city);
+        if (data.address.state) addressParts.push(data.address.state);
+        
+        if (addressParts.length > 0) {
+          setLocationName(addressParts.join(', '));
+        } else {
+          setLocationName(data.display_name || `${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+        }
       } else {
         setLocationName(`${lat.toFixed(4)}, ${lng.toFixed(4)}`);
       }
@@ -43,52 +49,39 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
       console.error('Reverse geocoding failed:', err);
       setLocationName(`${lat.toFixed(4)}, ${lng.toFixed(4)}`);
     }
-  }, [mapboxApiKey]);
+  }, []);
 
   // Initialize map
   useEffect(() => {
-    if (!mapContainer.current || !mapboxApiKey) return;
+    if (!mapContainer.current) return;
 
     try {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        accessToken: mapboxApiKey,
-        style: 'mapbox://styles/mapbox/streets-v12',
-        center: [selectedLocation.lng, selectedLocation.lat],
-        zoom: 15,
-        attributionControl: true,
-      });
+      // Create map
+      map.current = L.map(mapContainer.current).setView(
+        [selectedLocation.lat, selectedLocation.lng],
+        15
+      );
 
-      map.current.on('load', () => {
-        console.log('Mapbox map loaded successfully');
-      });
+      // Add OpenStreetMap tile layer
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 19,
+      }).addTo(map.current);
 
-      map.current.on('error', (err) => {
-        console.error('Mapbox map error:', err);
-        setError('Map failed to load. Check your API key.');
-      });
-
-      // Add navigation control
-      map.current.addControl(new mapboxgl.NavigationControl());
-
-      // Create marker
-      const markerEl = document.createElement('div');
-      markerEl.style.width = '30px';
-      markerEl.style.height = '30px';
-      markerEl.style.background = 'url("data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 30 30%22%3E%3Ccircle cx=%2215%22 cy=%2215%22 r=%2212%22 fill=%22%23667eea%22 stroke=%22white%22 stroke-width=%222%22/%3E%3C/svg%3E")';
-      markerEl.style.backgroundSize = 'contain';
-      markerEl.style.cursor = 'grab';
-
-      marker.current = new mapboxgl.Marker({ element: markerEl, draggable: true })
-        .setLngLat([selectedLocation.lng, selectedLocation.lat])
-        .addTo(map.current);
+      // Create draggable marker
+      marker.current = L.marker(
+        [selectedLocation.lat, selectedLocation.lng],
+        { draggable: true }
+      )
+        .addTo(map.current)
+        .bindPopup('Drag to move<br/>Click map to select');
 
       // Handle map click
       const handleMapClick = (e) => {
-        const { lng, lat } = e.lngLat;
+        const { lat, lng } = e.latlng;
         const newLocation = { lat, lng };
         setSelectedLocation(newLocation);
-        marker.current.setLngLat([lng, lat]);
+        marker.current.setLatLng([lat, lng]);
         reverseGeocode(lat, lng);
       };
 
@@ -96,10 +89,10 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
 
       // Handle marker drag
       const handleMarkerDragEnd = () => {
-        const lngLat = marker.current.getLngLat();
-        const newLocation = { lat: lngLat.lat, lng: lngLat.lng };
+        const { lat, lng } = marker.current.getLatLng();
+        const newLocation = { lat, lng };
         setSelectedLocation(newLocation);
-        reverseGeocode(lngLat.lat, lngLat.lng);
+        reverseGeocode(lat, lng);
       };
 
       marker.current.on('dragend', handleMarkerDragEnd);
@@ -121,7 +114,7 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
       console.error('Error initializing map:', err);
       setError('Failed to initialize map');
     }
-  }, [mapboxApiKey, reverseGeocode]);
+  }, [reverseGeocode]);
 
   // Handle location save
   const handleSaveLocation = async () => {
@@ -133,8 +126,8 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
     setLoading(true);
     try {
       await onLocationSelect({
-        latitude: selectedLocation.lat,
-        longitude: selectedLocation.lng,
+        lat: selectedLocation.lat,
+        lng: selectedLocation.lng,
         location: locationName,
       });
     } catch (err) {
@@ -157,11 +150,8 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
         const { latitude, longitude } = position.coords;
         const newLocation = { lat: latitude, lng: longitude };
         setSelectedLocation(newLocation);
-        marker.current.setLngLat([longitude, latitude]);
-        map.current.flyTo({
-          center: [longitude, latitude],
-          zoom: 15,
-        });
+        marker.current.setLatLng([latitude, longitude]);
+        map.current.flyTo([latitude, longitude], 15);
         reverseGeocode(latitude, longitude);
         setLoading(false);
       },
@@ -171,16 +161,6 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
       }
     );
   };
-
-  if (!mapboxApiKey) {
-    return (
-      <div className="location-map-picker-overlay">
-        <div className="location-map-picker-error">
-          ⚠️ Mapbox API key not configured
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div className="location-map-picker-overlay">

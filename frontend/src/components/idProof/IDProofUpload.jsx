@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import '../../styles/IDProofUpload.css';
 
-const IDProofUpload = () => {
+const IDProofUpload = ({ onClose }) => {
   const { api } = useAuth();
   const [file, setFile] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -181,6 +181,28 @@ const IDProofUpload = () => {
         >
           {loading ? 'Uploading...' : 'Upload ID Proof'}
         </button>
+
+        {success && (
+          <div className="additional-actions">
+            <button
+              type="button"
+              className="close-btn"
+              onClick={() => onClose && onClose()}
+            >
+              Continue to Dashboard
+            </button>
+          </div>
+        )}
+
+        {onClose && !success && (
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={() => onClose()}
+          >
+            Skip for Now
+          </button>
+        )}
       </form>
     </div>
   );

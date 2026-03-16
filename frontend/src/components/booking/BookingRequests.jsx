@@ -10,6 +10,21 @@ const BookingRequests = () => {
   const [success, setSuccess] = useState('');
   const [filter, setFilter] = useState('requested');
 
+  // Helper function to render star rating
+  const renderStars = (rating) => {
+    const fullStars = Math.floor(rating);
+    const hasHalfStar = rating % 1 >= 0.5;
+    const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+    
+    return (
+      <span className="stars">
+        {'★'.repeat(fullStars)}
+        {hasHalfStar && '⯪'}
+        {'☆'.repeat(emptyStars)}
+      </span>
+    );
+  };
+
   useEffect(() => {
     fetchBookings();
   }, []);
@@ -124,25 +139,25 @@ const BookingRequests = () => {
           className={`filter-btn ${filter === 'requested' ? 'active' : ''}`}
           onClick={() => setFilter('requested')}
         >
-          📩 Requested ({pendingRequests.length})
+          Requested ({pendingRequests.length})
         </button>
         <button
           className={`filter-btn ${filter === 'accepted' ? 'active' : ''}`}
           onClick={() => setFilter('accepted')}
         >
-          ✅ Accepted ({acceptedBookings.length})
+          Accepted ({acceptedBookings.length})
         </button>
         <button
           className={`filter-btn ${filter === 'completed' ? 'active' : ''}`}
           onClick={() => setFilter('completed')}
         >
-          🎉 Completed ({completedBookings.length})
+          Completed ({completedBookings.length})
         </button>
         <button
           className={`filter-btn ${filter === 'rejected' ? 'active' : ''}`}
           onClick={() => setFilter('rejected')}
         >
-          ❌ Rejected ({rejectedBookings.length})
+          Rejected ({rejectedBookings.length})
         </button>
       </div>
 
@@ -173,21 +188,49 @@ const BookingRequests = () => {
 
               <div className="booking-card-details">
                 <div className="detail-item">
-                  <span className="label">📝 Service:</span>
+                  <span className="label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '4px', verticalAlign: 'middle' }}>
+                      <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                      <polyline points="14 2 14 8 20 8"></polyline>
+                      <line x1="16" y1="13" x2="8" y2="13"></line>
+                      <line x1="16" y1="17" x2="8" y2="17"></line>
+                      <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                    Service:
+                  </span>
                   <span className="value">{booking.serviceDetails}</span>
                 </div>
                 <div className="detail-item">
-                  <span className="label">📅 Scheduled Date:</span>
+                  <span className="label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '4px', verticalAlign: 'middle' }}>
+                      <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                      <line x1="16" y1="2" x2="16" y2="6"></line>
+                      <line x1="8" y1="2" x2="8" y2="6"></line>
+                      <line x1="3" y1="10" x2="21" y2="10"></line>
+                    </svg>
+                    Scheduled Date:
+                  </span>
                   <span className="value">
                     {new Date(booking.scheduledDate).toLocaleString()}
                   </span>
                 </div>
                 <div className="detail-item">
-                  <span className="label">📞 Contact:</span>
+                  <span className="label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '4px', verticalAlign: 'middle' }}>
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                    Contact:
+                  </span>
                   <span className="value">{booking.customerId?.phone || 'N/A'}</span>
                 </div>
                 <div className="detail-item">
-                  <span className="label">📍 Request Date:</span>
+                  <span className="label">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '4px', verticalAlign: 'middle' }}>
+                      <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                      <circle cx="12" cy="10" r="3"></circle>
+                    </svg>
+                    Request Date:
+                  </span>
                   <span className="value">
                     {new Date(booking.createdAt).toLocaleDateString()}
                   </span>
@@ -200,8 +243,7 @@ const BookingRequests = () => {
                   <div className="rating-summary">
                     <div className="rating-badge">
                       <div className="rating-stars">
-                        {'⭐'.repeat(Math.floor(booking.workerId.averageRating))}
-                        {booking.workerId.averageRating % 1 > 0 && '✨'}
+                        {renderStars(booking.workerId.averageRating)}
                       </div>
                       <div className="rating-details">
                         <strong>{booking.workerId.averageRating.toFixed(1)}</strong>
@@ -211,7 +253,8 @@ const BookingRequests = () => {
                   </div>
                 ) : (
                   <div className="no-rating-info">
-                    <span>⭐ No reviews yet - Build your profile!</span>
+                    <span className="rating-stars">★★☆☆☆</span>
+                    <span>No reviews yet - Build your profile!</span>
                   </div>
                 )}
               </div>
@@ -223,13 +266,13 @@ const BookingRequests = () => {
                       className="btn-accept"
                       onClick={() => handleAcceptBooking(booking._id)}
                     >
-                      ✅ Accept
+                      Accept
                     </button>
                     <button
                       className="btn-reject"
                       onClick={() => handleRejectBooking(booking._id)}
                     >
-                      ❌ Reject
+                      Reject
                     </button>
                   </>
                 )}
@@ -238,14 +281,14 @@ const BookingRequests = () => {
                     className="btn-complete"
                     onClick={() => handleCompleteBooking(booking._id)}
                   >
-                    🎉 Mark as Completed
+                    Mark as Completed
                   </button>
                 )}
                 {booking.status === 'completed' && (
-                  <span className="completed-text">✅ Completed</span>
+                  <span className="completed-text">Completed</span>
                 )}
                 {booking.status === 'rejected' && (
-                  <span className="rejected-text">❌ Rejected</span>
+                  <span className="rejected-text">Rejected</span>
                 )}
               </div>
             </div>

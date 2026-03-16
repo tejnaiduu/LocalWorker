@@ -136,6 +136,34 @@ export const AuthProvider = ({ children }) => {
     }
   };
 
+  // Admin login function
+  const adminLogin = async (email, password) => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const response = await api.post('/admin/login', {
+        email,
+        password,
+      });
+
+      const { token: newToken, user: newUser } = response.data;
+      setToken(newToken);
+      setUser(newUser);
+      localStorage.setItem('token', newToken);
+      localStorage.setItem('user', JSON.stringify(newUser));
+      api.defaults.headers.common.Authorization = `Bearer ${newToken}`;
+      
+      return response.data;
+    } catch (err) {
+      const errorMessage = err.response?.data?.error || 'Admin login failed';
+      setError(errorMessage);
+      throw new Error(errorMessage);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   // Logout function
   const logout = () => {
     setUser(null);
@@ -182,6 +210,7 @@ export const AuthProvider = ({ children }) => {
     error,
     register,
     login,
+    adminLogin,
     logout,
     updateUser,
     isAuthenticated,

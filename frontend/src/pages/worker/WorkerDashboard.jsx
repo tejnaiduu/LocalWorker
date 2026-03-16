@@ -5,6 +5,7 @@ import RatingStars from '../../components/rating/RatingStars';
 import StatusBadge from '../../components/shared/StatusBadge';
 import WorkerRegister from '../../components/worker/WorkerRegister';
 import BookingRequests from '../../components/booking/BookingRequests';
+import LocationMapPicker from '../../components/location/LocationMapPicker';
 import '../shared/Dashboard.css';
 
 function WorkerDashboard() {
@@ -19,6 +20,7 @@ function WorkerDashboard() {
   const [showEditForm, setShowEditForm] = useState(false);
   const [workerLocation, setWorkerLocation] = useState(null);
   const [showProfileModal, setShowProfileModal] = useState(false);
+  const [showMapPicker, setShowMapPicker] = useState(false);
 
   // Check authentication and redirect
   useEffect(() => {
@@ -44,10 +46,20 @@ function WorkerDashboard() {
       setError('');
       const response = await api.get('/auth/me');
       if (response.data.workerProfile) {
-        setWorkerProfile(response.data.workerProfile);
-        setStatus(response.data.workerProfile.status);
-        if (response.data.workerProfile.latitude && response.data.workerProfile.longitude) {
-          setWorkerLocation({ lat: response.data.workerProfile.latitude, lng: response.data.workerProfile.longitude });
+        // Check if worker profile is complete and verified
+        const workerData = response.data.workerProfile;
+        if (!workerData.profileCompleted || !workerData.isVerified) {
+          setError('');
+          setLoading(false);
+          // Redirect to complete profile if not verified
+          navigate('/complete-profile');
+          return;
+        }
+
+        setWorkerProfile(workerData);
+        setStatus(workerData.status);
+        if (workerData.latitude && workerData.longitude) {
+          setWorkerLocation({ lat: workerData.latitude, lng: workerData.longitude });
         }
         
         // Auto-fetch and update location after profile is fetched
@@ -55,7 +67,7 @@ function WorkerDashboard() {
           navigator.geolocation.getCurrentPosition(
             async (position) => {
               const { latitude, longitude } = position.coords;
-              let locationName = response.data.workerProfile.location;
+              let locationName = workerData.location;
               
               // Reverse geocode to get location name
               try {
@@ -125,70 +137,36 @@ function WorkerDashboard() {
     }
   };
 
-  // Update worker location
-  const handleUpdateLocation = async () => {
+  // Update worker location - Open map picker
+  const handleUpdateLocation = () => {
+    setShowMapPicker(true);
+  };
+
+  // Handle location selected from map picker
+  const handleLocationSelect = async (location) => {
     try {
       setLoading(true);
-      if (!navigator.geolocation) {
-        setError('Geolocation not supported');
-        return;
-      }
+      const { lat, lng, location: locationName } = location;
 
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          console.log('📍 Location updated:', { latitude, longitude });
+      // Update worker profile with new location
+      const response = await api.put(`/workers/${workerProfile._id}`, {
+        skill: workerProfile.skill,
+        experience: workerProfile.experience,
+        phone: workerProfile.phone,
+        location: locationName,
+        latitude: lat,
+        longitude: lng,
+      });
 
-          // Reverse geocode to get location name
-          let locationName = workerProfile.location;
-          try {
-            const googleMapsApiKey = import.meta.env.VITE_GOOGLE_MAPS_API_KEY;
-            if (googleMapsApiKey) {
-              const geocodingResponse = await fetch(
-                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${googleMapsApiKey}`
-              );
-              const geocodingData = await geocodingResponse.json();
-              if (geocodingData.results && geocodingData.results.length > 0) {
-                // Extract city/area name from the results
-                const addressComponents = geocodingData.results[0].address_components;
-                const cityComponent = addressComponents.find(comp => 
-                  comp.types.includes('locality') || 
-                  comp.types.includes('administrative_area_level_3') ||
-                  comp.types.includes('administrative_area_level_2')
-                );
-                if (cityComponent) {
-                  locationName = cityComponent.long_name;
-                }
-              }
-            }
-          } catch (geoErr) {
-            console.log('Reverse geocoding failed, keeping existing location');
-          }
-
-          // Update worker profile with new location
-          const response = await api.put(`/workers/${workerProfile._id}`, {
-            skill: workerProfile.skill,
-            experience: workerProfile.experience,
-            phone: workerProfile.phone,
-            location: locationName,
-            latitude,
-            longitude,
-          });
-
-          setWorkerLocation({ lat: latitude, lng: longitude });
-          setWorkerProfile(response.data.worker);
-          setSuccess(`📍 Location updated: ${locationName} (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`);
-          setLoading(false);
-          
-          setTimeout(() => setSuccess(''), 3000);
-        },
-        (error) => {
-          console.error('Geolocation error:', error);
-          setError('Unable to get location. Make sure you granted permission.');
-          setLoading(false);
-        }
-      );
+      setWorkerLocation({ lat, lng });
+      setWorkerProfile(response.data.worker);
+      setShowMapPicker(false);
+      setSuccess(`📍 Location updated: ${locationName} (${lat.toFixed(4)}, ${lng.toFixed(4)})`);
+      setLoading(false);
+      
+      setTimeout(() => setSuccess(''), 3000);
     } catch (err) {
+      console.error('Failed to update location:', err);
       setError('Failed to update location');
       setLoading(false);
     }
@@ -395,7 +373,13 @@ function WorkerDashboard() {
         ) : (
           <>
             <section className="location-update-section">
-              <h3>📍 Your Location</h3>
+              <h3>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ marginRight: '8px', verticalAlign: 'middle' }}>
+                  <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                  <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+                Your Location
+              </h3>
               <div className="location-info">
                 {workerLocation ? (
                   <div className="location-details">
@@ -410,8 +394,17 @@ function WorkerDashboard() {
                   onClick={handleUpdateLocation}
                   disabled={loading}
                 >
-                  {loading ? '📍 Updating...' : '📍 Update My Location Now'}
+                  {loading ? 'Updating...' : 'Update My Location Now'}
                 </button>
+                
+                {/* Map Picker Modal */}
+                {showMapPicker && (
+                  <LocationMapPicker
+                    initialLocation={workerLocation}
+                    onLocationSelect={handleLocationSelect}
+                    onCancel={() => setShowMapPicker(false)}
+                  />
+                )}
               </div>
             </section>
 
@@ -421,7 +414,7 @@ function WorkerDashboard() {
                   <h3>Your Profile</h3>
                   {workerProfile && (
                     <button className="edit-btn" onClick={() => setShowEditForm(true)}>
-                      ✏️ Edit Profile
+                      Edit Profile
                     </button>
                   )}
                 </div>
@@ -478,20 +471,20 @@ function WorkerDashboard() {
                 )}
                 <div className="status-buttons">
                   <button
-                    className={`status-btn ${status === 'available' ? 'active' : ''}`}
+                    className={`status-btn available ${status === 'available' ? 'active' : ''}`}
                     onClick={() => handleStatusChange('available')}
                     disabled={isProfileIncomplete}
                     title={isProfileIncomplete ? 'Complete profile first' : 'Set yourself available'}
                   >
-                    🟢 Set Available
+                    Set Available
                   </button>
                   <button
-                    className={`status-btn ${status === 'busy' ? 'active' : ''}`}
+                    className={`status-btn busy ${status === 'busy' ? 'active' : ''}`}
                     onClick={() => handleStatusChange('busy')}
                     disabled={isProfileIncomplete}
                     title={isProfileIncomplete ? 'Complete profile first' : 'Set yourself busy'}
                   >
-                    🔴 Set Busy
+                    Set Busy
                   </button>
                 </div>
               </div>

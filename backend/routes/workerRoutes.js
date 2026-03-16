@@ -1,8 +1,41 @@
 const express = require('express');
 const router = express.Router();
+const multer = require('multer');
+const path = require('path');
+const fs = require('fs');
 const Worker = require('../models/Worker');
 const User = require('../models/User');
 const { protect, authorizeRole } = require('../middleware/auth');
+
+// Create uploads directory if it doesn't exist
+const uploadDir = path.join(__dirname, '../uploads/idproofs');
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
+// Configure multer for file uploads
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    cb(null, 'idproof-' + uniqueSuffix + path.extname(file.originalname));
+  },
+});
+
+const upload = multer({
+  storage,
+  fileFilter: (req, file, cb) => {
+    const allowedMimes = ['image/jpeg', 'image/png', 'image/jpg'];
+    if (allowedMimes.includes(file.mimetype)) {
+      cb(null, true);
+    } else {
+      cb(new Error('Invalid file type. Only JPG and PNG are allowed.'));
+    }
+  },
+  limits: { fileSize: 5 * 1024 * 1024 }, // 5MB max
+});
 
 // Haversine formula to calculate distance between two coordinates
 const calculateDistance = (lat1, lon1, lat2, lon2) => {
@@ -36,8 +69,12 @@ router.get('/nearby', async (req, res) => {
     const longitude = parseFloat(lng);
     const searchRadius = parseFloat(radius);
 
-    // Get all workers with coordinates
-    let query = { latitude: { $ne: null }, longitude: { $ne: null } };
+    // Get all verified workers with coordinates
+    let query = { 
+      latitude: { $ne: null }, 
+      longitude: { $ne: null },
+      isVerified: true  // Only return verified workers
+    };
     
     if (skill) {
       const validSkills = ['plumber', 'electrician', 'carpenter'];
@@ -87,7 +124,8 @@ router.get('/skill/:skill', async (req, res) => {
       return res.status(400).json({ error: 'Invalid skill type' });
     }
 
-    const workers = await Worker.find({ skill })
+    // Only return verified workers
+    const workers = await Worker.find({ skill, isVerified: true })
       .populate('userId', 'name email')
       .sort({ createdAt: -1 });
     res.json(workers);
@@ -160,7 +198,8 @@ router.post('/register', protect, async (req, res) => {
 // GET /api/workers - Get all workers
 router.get('/', async (req, res) => {
   try {
-    const workers = await Worker.find()
+    // Only return verified workers to customers
+    const workers = await Worker.find({ isVerified: true })
       .populate('userId', 'name email')
       .sort({ createdAt: -1 });
     res.json(workers);
@@ -282,6 +321,104 @@ router.put('/:id', protect, async (req, res) => {
   }
 });
 
-module.exports = router;
+// POST /api/workers/complete-profile - Complete worker profile with ID proof (protected)
+router.post('/complete-profile', protect, upload.single('idProof'), async (req, res) => {
+  try {
+    const { skill, experience, location, latitude, longitude } = req.body;
+    const user = await User.findById(req.user.id);
+
+    if (!user || user.role !== 'worker') {
+      if (req.file) fs.unlinkSync(req.file.path);
+      return res.status(403).json({ error: 'Only workers can access this endpoint' });
+    }
+
+    // Get existing worker or create new one
+    let worker = await Worker.findOne({ userId: req.user.id });
+    
+    if (!worker) {
+      worker = new Worker({ userId: req.user.id });
+    }
+
+    // Validate and update fields
+    if (!skill || experience === undefined || !location) {
+      if (req.file) fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: 'Skill, experience, and location are required' });
+    }
+
+    const validSkills = ['plumber', 'electrician', 'carpenter'];
+    if (!validSkills.includes(skill)) {
+      if (req.file) fs.unlinkSync(req.file.path);
+      return res.status(400).json({ error: 'Invalid skill type' });
+    }
+
+    // Update worker profile
+    worker.name = user.name;
+    worker.phone = user.phone || null;
+    worker.skill = skill;
+    worker.experience = Number(experience);
+    worker.location = location;
+    worker.latitude = latitude ? Number(latitude) : null;
+    worker.longitude = longitude ? Number(longitude) : null;
+    worker.profileCompleted = true;
+
+    // Handle file upload
+    if (req.file) {
+      // Remove old file if exists
+      if (worker.idProof) {
+        const oldFilePath = path.join(uploadDir, path.basename(worker.idProof));
+        if (fs.existsSync(oldFilePath)) {
+          fs.unlinkSync(oldFilePath);
+        }
+      }
+      worker.idProof = req.file.filename;
+      worker.idProofApproved = false; // Reset approval on new upload
+    } else {
+      // File is optional for profile completion
+      if (!worker.idProof) {
+        worker.idProof = null;
+      }
+    }
+
+    await worker.save();
+
+    // Update user model with location and coordinates
+    const userUpdate = {
+      location: location,
+      latitude: latitude || undefined,
+      longitude: longitude || undefined,
+    };
+    await User.findByIdAndUpdate(req.user.id, userUpdate);
+
+    res.status(200).json({
+      message: 'Worker profile completed successfully',
+      worker,
+    });
+  } catch (error) {
+    if (req.file) {
+      fs.unlinkSync(req.file.path);
+    }
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// GET /api/workers/verification-status - Get worker verification status (protected)
+router.get('/verification-status', protect, async (req, res) => {
+  try {
+    const worker = await Worker.findOne({ userId: req.user.id });
+
+    if (!worker) {
+      return res.status(404).json({ error: 'Worker profile not found' });
+    }
+
+    res.json({
+      profileCompleted: worker.profileCompleted,
+      isVerified: worker.isVerified,
+      idProofApproved: worker.idProofApproved,
+      worker,
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
 
 module.exports = router;

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import LocationMapPicker from '../location/LocationMapPicker';
+import IDProofUpload from '../idProof/IDProofUpload';
 import './WorkerRegister.css';
 
 export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
@@ -20,6 +21,7 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
   const [locationStatus, setLocationStatus] = useState('');
   const [fetchingLocation, setFetchingLocation] = useState(false);
   const [showMapPicker, setShowMapPicker] = useState(false);
+  const [showIdProofUpload, setShowIdProofUpload] = useState(false);
   const formRef = useRef(null);
 
   // Populate form if updating existing profile
@@ -144,8 +146,11 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
       }
 
       setSuccess(true);
+      
+      // Show ID proof upload option after profile is saved
       setTimeout(() => {
         setSuccess(false);
+        setShowIdProofUpload(true);
         if (onSuccess) {
           onSuccess(response.data.worker);
         }
@@ -160,7 +165,18 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
   return (
     <div className="register-container">
       <div className="register-card">
-        <h2>{workerId ? 'Update Your Profile' : 'Complete Your Worker Profile'}</h2>
+        {showIdProofUpload ? (
+          <>
+            <h2>📋 Upload ID Proof for Verification</h2>
+            <p className="subtitle">Complete your profile by uploading a valid ID proof (Aadhaar, PAN, or Driving License)</p>
+            <IDProofUpload onClose={() => {
+              setShowIdProofUpload(false);
+              if (onCancel) onCancel();
+            }} />
+          </>
+        ) : (
+          <>
+            <h2>{workerId ? 'Update Your Profile' : 'Complete Your Worker Profile'}</h2>
         
         {success && (
           <div className="alert success">
@@ -280,15 +296,17 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
             </button>
           )}
         </form>
-      </div>
 
-      {showMapPicker && (
-        <LocationMapPicker
-          initialLocation={formData.latitude && formData.longitude ? { lat: formData.latitude, lng: formData.longitude } : null}
-          onLocationSelect={handleLocationSelect}
-          onCancel={() => setShowMapPicker(false)}
-        />
-      )}
+            {showMapPicker && (
+              <LocationMapPicker
+                initialLocation={formData.latitude && formData.longitude ? { lat: formData.latitude, lng: formData.longitude } : null}
+                onLocationSelect={handleLocationSelect}
+                onCancel={() => setShowMapPicker(false)}
+              />
+            )}
+          </>
+        )}
+      </div>
     </div>
   );
 }

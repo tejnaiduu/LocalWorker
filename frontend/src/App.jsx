@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
+import CompleteWorkerProfile from './pages/worker/CompleteWorkerProfile';
 import CustomerDashboard from './pages/customer/CustomerDashboard';
 import WorkerDashboard from './pages/worker/WorkerDashboard';
 import AdminLogin from './pages/admin/AdminLogin';
@@ -54,6 +55,7 @@ function AppContent() {
     <Routes>
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/complete-profile" element={<ProtectedRoute><CompleteWorkerProfile /></ProtectedRoute>} />
       <Route path="/customer-dashboard" element={<ProtectedRoute><CustomerDashboard /></ProtectedRoute>} />
       <Route path="/customer-dashboard/find-workers" element={<ProtectedRoute><WorkerBrowser /></ProtectedRoute>} />
       <Route path="/customer-dashboard/my-bookings" element={<ProtectedRoute><BookingHistory /></ProtectedRoute>} />
