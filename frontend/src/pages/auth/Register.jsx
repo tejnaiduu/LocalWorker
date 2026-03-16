@@ -99,7 +99,7 @@ function Register() {
 
       console.log('Registering with data:', registerData);
       await register(registerData);
-      navigate(formData.role === 'worker' ? '/worker-dashboard' : '/customer-dashboard');
+      navigate(formData.role === 'worker' ? '/complete-profile' : '/customer-dashboard');
     } catch (err) {
       setErrors({ general: err.message || 'Registration failed' });
     } finally {
@@ -186,9 +186,10 @@ function Register() {
   );
 
   return (
-    <div className="auth-container">
+    <div className="page-wrapper">
+      <div className="auth-container">
       {/* Left Panel - Navy Background */}
-      <div className="auth-left-panel">
+      <div className="auth-left-panel left-panel">
         <div className="auth-logo">
           <div className="auth-logo-icon">
             <LogoIcon />
@@ -214,7 +215,7 @@ function Register() {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="auth-right-panel">
+      <div className="auth-right-panel right-panel">
         <div className="auth-card">
           <h2>Register</h2>
           <div className="auth-title-accent"></div>
@@ -224,7 +225,7 @@ function Register() {
 
           <form onSubmit={handleSubmit}>
             {/* Full Name */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Full Name <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><UserIcon /></span>
@@ -241,7 +242,7 @@ function Register() {
             </div>
 
             {/* Email */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Email <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><EmailIcon /></span>
@@ -258,7 +259,7 @@ function Register() {
             </div>
 
             {/* Role Toggle */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>I am a: <span className="required">*</span></label>
               <div className="role-toggle">
                 <button
@@ -279,7 +280,7 @@ function Register() {
             </div>
 
             {/* Phone */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Phone Number <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><PhoneIcon /></span>
@@ -296,7 +297,7 @@ function Register() {
             </div>
 
             {/* Password */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Password <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><LockIcon /></span>
@@ -320,7 +321,7 @@ function Register() {
             </div>
 
             {/* Confirm Password */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Confirm Password <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><LockCheckIcon /></span>
@@ -346,7 +347,7 @@ function Register() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="submit-btn"
+              className="submit-btn form-btn"
               disabled={loading}
             >
               {loading ? (
@@ -373,6 +374,7 @@ function Register() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

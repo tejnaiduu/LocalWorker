@@ -324,6 +324,11 @@ router.put('/:id', protect, async (req, res) => {
 // POST /api/workers/complete-profile - Complete worker profile with ID proof (protected)
 router.post('/complete-profile', protect, upload.single('idProof'), async (req, res) => {
   try {
+    console.log('Complete profile request received');
+    console.log('User ID:', req.user.id);
+    console.log('File:', req.file ? req.file.filename : 'No file');
+    console.log('Body:', req.body);
+
     const { skill, experience, location, latitude, longitude } = req.body;
     const user = await User.findById(req.user.id);
 
@@ -361,6 +366,13 @@ router.post('/complete-profile', protect, upload.single('idProof'), async (req, 
     worker.longitude = longitude ? Number(longitude) : null;
     worker.profileCompleted = true;
 
+    // ID Proof is REQUIRED
+    if (!req.file) {
+      return res.status(400).json({ 
+        error: 'ID Proof upload is required. Please upload a valid Aadhaar, PAN, or Driving License.' 
+      });
+    }
+
     // Handle file upload
     if (req.file) {
       // Remove old file if exists
@@ -372,11 +384,7 @@ router.post('/complete-profile', protect, upload.single('idProof'), async (req, 
       }
       worker.idProof = req.file.filename;
       worker.idProofApproved = false; // Reset approval on new upload
-    } else {
-      // File is optional for profile completion
-      if (!worker.idProof) {
-        worker.idProof = null;
-      }
+      worker.isVerified = false; // Set to unverified until admin approves
     }
 
     await worker.save();

@@ -81,9 +81,10 @@ function AdminLogin() {
   );
 
   return (
-    <div className="auth-container">
+    <div className="page-wrapper">
+      <div className="auth-container">
       {/* Left Panel - Navy Background */}
-      <div className="auth-left-panel">
+      <div className="auth-left-panel left-panel">
         <div className="auth-logo">
           <div className="auth-logo-icon">
             <LogoIcon />
@@ -114,7 +115,7 @@ function AdminLogin() {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="auth-right-panel">
+      <div className="auth-right-panel right-panel">
         <div className="auth-card">
           <h2>
             Admin Login
@@ -129,7 +130,7 @@ function AdminLogin() {
 
           <form onSubmit={handleSubmit}>
             {/* Email */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Email</label>
               <div className="input-with-icon">
                 <span className="input-icon"><EmailIcon /></span>
@@ -143,7 +144,7 @@ function AdminLogin() {
             </div>
 
             {/* Password */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Password</label>
               <div className="input-with-icon">
                 <span className="input-icon"><LockIcon /></span>
@@ -166,7 +167,7 @@ function AdminLogin() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="submit-btn"
+              className="submit-btn form-btn"
               disabled={loading}
             >
               {loading ? (
@@ -202,6 +203,7 @@ function AdminLogin() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

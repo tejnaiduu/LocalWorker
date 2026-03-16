@@ -118,24 +118,29 @@ export default function CompleteWorkerProfile() {
       return;
     }
 
+    if (!file) {
+      setError('ID Proof upload is required. Please upload a valid Aadhaar, PAN, or Driving License.');
+      return;
+    }
+
     try {
       setLoading(true);
-      const mapData = new FormData();
-      mapData.append('skill', formData.skill);
-      mapData.append('experience', formData.experience);
-      mapData.append('location', formData.location);
-      mapData.append('latitude', formData.latitude);
-      mapData.append('longitude', formData.longitude);
+      const formDataPayload = new FormData();
+      formDataPayload.append('skill', formData.skill);
+      formDataPayload.append('experience', formData.experience);
+      formDataPayload.append('location', formData.location);
+      formDataPayload.append('latitude', formData.latitude);
+      formDataPayload.append('longitude', formData.longitude);
 
       if (file) {
-        mapData.append('idProof', file);
+        formDataPayload.append('idProof', file);
       }
 
-      const response = await api.post('/workers/complete-profile', mapData, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      console.log('API Base URL:', api.defaults.baseURL);
+      console.log('Token present:', !!api.defaults.headers.common.Authorization);
+      console.log('Submitting complete profile request...');
+
+      const response = await api.post('/workers/complete-profile', formDataPayload);
 
       setSuccess('✓ Profile completed successfully! Redirecting to dashboard...');
       
@@ -143,6 +148,9 @@ export default function CompleteWorkerProfile() {
         navigate('/worker-dashboard');
       }, 2000);
     } catch (err) {
+      console.error('Complete profile error:', err);
+      console.error('Error response:', err.response?.data);
+      console.error('Error status:', err.response?.status);
       setError(err.response?.data?.error || 'Failed to complete profile. Please try again.');
     } finally {
       setLoading(false);
@@ -248,8 +256,8 @@ export default function CompleteWorkerProfile() {
 
           {/* ID Proof Upload */}
           <div className="form-group">
-            <label htmlFor="idProof">Upload ID Proof (Optional)</label>
-            <p className="help-text">Accepted: Aadhaar, PAN, or Driving License (JPG/PNG, max 5MB)</p>
+            <label htmlFor="idProof">Upload ID Proof *</label>
+            <p className="help-text">Required: Aadhaar, PAN, or Driving License (JPG/PNG, max 5MB)</p>
             <div className="file-input-wrapper">
               <input
                 id="idProof"
@@ -282,7 +290,7 @@ export default function CompleteWorkerProfile() {
           </button>
 
           <p className="info-note">
-            ℹ️ After submission, your profile will be reviewed by an admin. You'll get access to the full dashboard once approved.
+            ℹ️ <strong>Verification Process:</strong> After submission, an admin will review your ID proof and profile details. Once approved, you'll receive full dashboard access. This typically takes 24-48 hours.
           </p>
         </form>
       </div>

@@ -46,7 +46,7 @@ router.post('/register', async (req, res) => {
       email,
       password,
       role,
-      phone: (role === 'customer' || role === 'admin') ? phone : null,
+      phone: phone || null, // Save phone for all roles including workers
       location: (role === 'customer' || role === 'admin') ? location : null,
       profilePhoto: role === 'customer' ? profilePhoto : null,
       latitude: (role === 'customer' || role === 'worker') ? latitude : null,

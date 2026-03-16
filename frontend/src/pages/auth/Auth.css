@@ -1,8 +1,173 @@
 /* Auth Container - Split Layout */
 .auth-container {
-  min-height: 100vh;
   display: flex;
   background: #F9FAFB;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Right Panel - Form */
+.auth-right-panel {
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* Form Card */
+.auth-card {
+  background: white;
+  border: 0.5px solid #E5E7EB;
+  border-radius: 16px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 28px 32px;
+  width: 100%;
+  max-width: 440px;
+}
+
+/* Form Group - reduced spacing */
+.form-group {
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+  color: #374151;
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 10px 14px;
+  padding-left: 40px;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #111827;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+  height: 42px;
+}
+
+/* Animations */
+@keyframes slideInLeft {
+  from { opacity: 0; transform: translateX(-40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInRight {
+  from { opacity: 0; transform: translateX(40px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.left-panel {
+  animation: slideInLeft 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+.right-panel {
+  animation: slideInRight 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.15s both;
+  will-change: transform, opacity;
+}
+
+.form-field:nth-child(1) { animation: fadeUp 0.4s ease-out 0.3s both; }
+.form-field:nth-child(2) { animation: fadeUp 0.4s ease-out 0.4s both; }
+.form-field:nth-child(3) { animation: fadeUp 0.4s ease-out 0.5s both; }
+.form-field:nth-child(4) { animation: fadeUp 0.4s ease-out 0.55s both; }
+.form-field:nth-child(5) { animation: fadeUp 0.4s ease-out 0.6s both; }
+.form-field:nth-child(6) { animation: fadeUp 0.4s ease-out 0.65s both; }
+.form-btn { animation: fadeUp 0.4s ease-out 0.7s both; }
+
+/* Button Hover Micro-interactions */
+.submit-btn {
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.submit-btn:hover:not(:disabled) {
+  background: #1D4ED8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+.submit-btn:active:not(:disabled) {
+  transform: translateY(0px);
+  box-shadow: none;
+}
+
+/* Input Field Micro-interactions */
+.form-group input {
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus {
+  border-color: #2563EB;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* Role Toggle Transition */
+.role-toggle .toggle-btn {
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.role-toggle .toggle-btn.active {
+  transition: all 0.2s ease;
+}
+
+/* Page Wrapper Transition */
+@keyframes slideInFromLeft {
+  from { opacity: 0; transform: translateX(-100%); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.page-wrapper {
+  animation: slideInFromLeft 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  will-change: transform, opacity;
+}
+
+/* Directional Page Transitions - Full page slide */
+@keyframes slideInFromRight {
+  from { opacity: 0; transform: translateX(60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes slideInFromLeftDir {
+  from { opacity: 0; transform: translateX(-60px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.page-slide-right .page-wrapper {
+  animation: slideInFromRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.page-slide-left .page-wrapper {
+  animation: slideInFromLeftDir 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .left-panel, .right-panel, .form-field, .form-btn {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .submit-btn:hover:not(:disabled) {
+    transform: none;
+    box-shadow: none;
+  }
+  .page-wrapper {
+    animation: none;
+  }
 }
 
 /* Left Panel - Navy Background */
@@ -87,9 +252,12 @@
 .auth-right-panel {
   width: 60%;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 40px;
+  justify-content: flex-start;
+  padding: 40px 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* Form Card */
@@ -98,7 +266,7 @@
   border: 0.5px solid #E5E7EB;
   border-radius: 16px;
   box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
-  padding: 40px 36px;
+  padding: 28px 32px;
   width: 100%;
   max-width: 440px;
 }
@@ -169,16 +337,16 @@
 
 /* Form Group */
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 12px;
   position: relative;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
   color: #374151;
   font-weight: 500;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .form-group label .required {
@@ -212,10 +380,11 @@
   padding-left: 40px;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   color: #111827;
   transition: border-color 0.2s, box-shadow 0.2s;
   box-sizing: border-box;
+  height: 42px;
 }
 
 .form-group input::placeholder {
@@ -334,21 +503,21 @@
 /* Submit Button */
 .submit-btn {
   width: 100%;
-  padding: 12px;
-  background: #2563EB;
-  color: white;
+  padding: 12px 28px;
+  background: #2563EB !important;
+  color: white !important;
   border: none;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.2s;
-  height: 44px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
 .submit-btn:hover:not(:disabled) {

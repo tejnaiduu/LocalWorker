@@ -148,9 +148,10 @@ function AdminRegister() {
   );
 
   return (
-    <div className="auth-container">
+    <div className="page-wrapper">
+      <div className="auth-container">
       {/* Left Panel - Navy Background */}
-      <div className="auth-left-panel">
+      <div className="auth-left-panel left-panel">
         <div className="auth-logo">
           <div className="auth-logo-icon">
             <LogoIcon />
@@ -181,7 +182,7 @@ function AdminRegister() {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="auth-right-panel">
+      <div className="auth-right-panel right-panel">
         <div className="auth-card">
           <h2>
             Admin Registration
@@ -197,7 +198,7 @@ function AdminRegister() {
 
           <form onSubmit={handleSubmit}>
             {/* Full Name */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Full Name <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><UserIcon /></span>
@@ -212,7 +213,7 @@ function AdminRegister() {
             </div>
 
             {/* Email */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Email <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><EmailIcon /></span>
@@ -227,7 +228,7 @@ function AdminRegister() {
             </div>
 
             {/* Phone */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Phone Number <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><PhoneIcon /></span>
@@ -242,7 +243,7 @@ function AdminRegister() {
             </div>
 
             {/* Password */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Password <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><LockIcon /></span>
@@ -265,7 +266,7 @@ function AdminRegister() {
             </div>
 
             {/* Confirm Password */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Confirm Password <span className="required">*</span></label>
               <div className="input-with-icon">
                 <span className="input-icon"><LockCheckIcon /></span>
@@ -289,7 +290,7 @@ function AdminRegister() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="submit-btn"
+              className="submit-btn form-btn"
               disabled={loading}
             >
               {loading ? (
@@ -325,6 +326,7 @@ function AdminRegister() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

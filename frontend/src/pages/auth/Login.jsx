@@ -90,9 +90,10 @@ function Login() {
   );
 
   return (
-    <div className="auth-container">
+    <div className="page-wrapper">
+      <div className="auth-container">
       {/* Left Panel - Navy Background */}
-      <div className="auth-left-panel">
+      <div className="auth-left-panel left-panel">
         <div className="auth-logo">
           <div className="auth-logo-icon">
             <LogoIcon />
@@ -118,7 +119,7 @@ function Login() {
       </div>
 
       {/* Right Panel - Form */}
-      <div className="auth-right-panel">
+      <div className="auth-right-panel right-panel">
         <div className="auth-card">
           <h2>Welcome back</h2>
           <div className="auth-title-accent"></div>
@@ -128,7 +129,7 @@ function Login() {
 
           <form onSubmit={handleSubmit}>
             {/* Email */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Email</label>
               <div className="input-with-icon">
                 <span className="input-icon"><EmailIcon /></span>
@@ -143,7 +144,7 @@ function Login() {
             </div>
 
             {/* Password */}
-            <div className="form-group">
+            <div className="form-group form-field">
               <label>Password</label>
               <div className="input-with-icon">
                 <span className="input-icon"><LockIcon /></span>
@@ -167,7 +168,7 @@ function Login() {
             {/* Submit Button */}
             <button
               type="submit"
-              className="submit-btn"
+              className="submit-btn form-btn"
               disabled={loading}
             >
               {loading ? (
@@ -194,6 +195,7 @@ function Login() {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 }

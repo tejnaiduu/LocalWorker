@@ -340,4 +340,32 @@ router.put('/workers/reject/:id', protect, authorizeAdmin, async (req, res) => {
   }
 });
 
+// GET /api/admin/idproofs/view/:filename - View ID proof file
+router.get('/idproofs/view/:filename', protect, authorizeAdmin, async (req, res) => {
+  try {
+    const filename = req.params.filename;
+    
+    // Security: Only allow alphanumeric characters, hyphens, and dots in filename
+    if (!/^[a-zA-Z0-9\-_.]+$/.test(filename)) {
+      return res.status(400).json({ error: 'Invalid filename' });
+    }
+    
+    const filepath = path.join(__dirname, '../uploads/idproofs', filename);
+    
+    // Check if file exists
+    if (!fs.existsSync(filepath)) {
+      return res.status(404).json({ error: 'ID proof file not found' });
+    }
+    
+    // Send file
+    res.download(filepath, filename, (err) => {
+      if (err) {
+        console.error('Error sending file:', err);
+      }
+    });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;

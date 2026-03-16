@@ -53,6 +53,18 @@ const IDProofVerification = () => {
     }
   };
 
+  const handleViewIDProof = (filename) => {
+    if (!filename) {
+      alert('No ID proof file available');
+      return;
+    }
+    // Open ID proof in new window
+    window.open(
+      `http://localhost:5000/api/admin/idproofs/view/${filename}`,
+      '_blank'
+    );
+  };
+
   if (loading) {
     return <div className="loading">Loading ID proofs...</div>;
   }
@@ -102,6 +114,12 @@ const IDProofVerification = () => {
               </div>
 
               <div className="card-actions">
+                <button
+                  className="view-btn"
+                  onClick={() => handleViewIDProof(worker.idProof)}
+                >
+                  👁️ View ID Proof
+                </button>
                 <button
                   className="approve-btn"
                   onClick={() => handleApprove(worker._id)}

@@ -304,6 +304,117 @@
   border-left-color: #2e7d32;
 }
 
+/* Card Actions and Buttons */
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 20px;
+}
+
+.card-header h3 {
+  margin: 0;
+  color: #333;
+}
+
+.card-content {
+  background: #f9f9f9;
+  padding: 15px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.info-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.info-row .label {
+  font-weight: 600;
+  color: #333;
+}
+
+.info-row .value {
+  color: #666;
+  word-break: break-word;
+}
+
+.card-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.view-btn,
+.approve-btn,
+.reject-btn {
+  flex: 1;
+  min-width: 120px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 6px;
+  font-size: 0.95em;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.view-btn {
+  background: #3f51b5;
+  color: white;
+}
+
+.view-btn:hover {
+  background: #303f9f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(63, 81, 181, 0.4);
+}
+
+.approve-btn {
+  background: #16a34a;
+  color: white;
+}
+
+.approve-btn:hover {
+  background: #15803d;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(22, 163, 74, 0.4);
+}
+
+.reject-btn {
+  background: #dc2626;
+  color: white;
+}
+
+.reject-btn:hover {
+  background: #991b1b;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+.verification-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.worker-skill {
+  margin: 5px 0 0 0;
+  color: #666;
+  text-transform: capitalize;
+}
+
+.no-data {
+  text-align: center;
+  padding: 40px 20px;
+  background: white;
+  border-radius: 8px;
+  color: #666;
+  font-size: 1.1em;
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .page-header {
@@ -335,5 +446,21 @@
 
   .delete-btn {
     width: 100%;
+  }
+
+  .card-header {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .card-actions {
+    flex-direction: column;
+  }
+
+  .view-btn,
+  .approve-btn,
+  .reject-btn {
+    width: 100%;
+    min-width: unset;
   }
 }

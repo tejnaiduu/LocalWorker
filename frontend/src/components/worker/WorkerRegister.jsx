@@ -177,20 +177,20 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
         ) : (
           <>
             <h2>{workerId ? 'Update Your Profile' : 'Complete Your Worker Profile'}</h2>
-        
-        {success && (
-          <div className="alert success">
-            ✓ Profile saved successfully!
-          </div>
-        )}
+            
+            {success && (
+              <div className="alert success">
+                ✓ Profile saved successfully!
+              </div>
+            )}
 
-        {error && (
-          <div className="alert error">
-            ✗ {error}
-          </div>
-        )}
+            {error && (
+              <div className="alert error">
+                ✗ {error}
+              </div>
+            )}
 
-        <form ref={formRef} onSubmit={handleSubmit} className="register-form">
+            <form ref={formRef} onSubmit={handleSubmit} className="register-form">
           <div className="form-group">
             <label htmlFor="name">Full Name</label>
             <input
@@ -295,7 +295,7 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
               Cancel
             </button>
           )}
-        </form>
+            </form>
 
             {showMapPicker && (
               <LocationMapPicker

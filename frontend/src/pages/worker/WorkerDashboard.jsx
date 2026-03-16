@@ -12,6 +12,7 @@ function WorkerDashboard() {
   const { user, logout, api, loading: authLoading } = useAuth();
   const navigate = useNavigate();
   const [workerProfile, setWorkerProfile] = useState(null);
+  const [currentUser, setCurrentUser] = useState(user); // Track fresh user data from server
   const [status, setStatus] = useState('available');
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,6 +35,7 @@ function WorkerDashboard() {
   // Fetch worker profile only after auth is loaded
   useEffect(() => {
     if (!authLoading && user && user.role === 'worker') {
+      setCurrentUser(user); // Sync currentUser on initial auth
       fetchWorkerProfile();
     } else if (!authLoading && !user) {
       setLoading(false);
@@ -45,6 +47,15 @@ function WorkerDashboard() {
       setLoading(true);
       setError('');
       const response = await api.get('/auth/me');
+      
+      // Update localStorage with fresh user data from server (to ensure phone and other fields are current)
+      if (response.data.user) {
+        console.log('Fresh user data from /auth/me:', response.data.user);
+        console.log('Phone from server:', response.data.user.phone);
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        setCurrentUser(response.data.user); // Update local state with fresh user
+      }
+      
       if (response.data.workerProfile) {
         // Check if worker profile is complete and verified
         const workerData = response.data.workerProfile;
@@ -302,7 +313,7 @@ function WorkerDashboard() {
                   </div>
                   <div className="info-row">
                     <span className="label">Phone:</span>
-                    <span className="value">{user?.phone || 'Not set'}</span>
+                    <span className="value">{currentUser?.phone || 'Not set'}</span>
                   </div>
                   <div className="info-row">
                     <span className="label">Location:</span>
@@ -438,7 +449,7 @@ function WorkerDashboard() {
                   </div>
                   <div className="info-row">
                     <span className="label">Phone:</span>
-                    <span className="value">{user?.phone || 'Not set'}</span>
+                    <span className="value">{currentUser?.phone || 'Not set'}</span>
                   </div>
                   <div className="info-row">
                     <span className="label">Location:</span>
