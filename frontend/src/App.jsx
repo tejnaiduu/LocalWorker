@@ -461,7 +461,7 @@ function HomePage() {
   };
 
   return (
-    <div style={{ paddingTop: '64px' }}>
+    <div>
       {/* Navbar */}
       <nav style={styles.navbar}>
         <div style={styles.navbarLogo}>
