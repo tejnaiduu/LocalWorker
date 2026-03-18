@@ -1,20 +1,15 @@
 {
-  "buildCommand": "npm --prefix frontend install && npm --prefix frontend run build",
-  "outputDirectory": "frontend/dist",
-  "routes": [
+  "buildCommand": "npm --prefix ./frontend ci && npm --prefix ./frontend run build",
+  "outputDirectory": "./frontend/dist",
+  "public": "./frontend/public",
+  "rewrites": [
     {
-      "src": "/api/(.*)",
-      "dest": "https://localworker.onrender.com/api/$1"
+      "source": "/api/:path*",
+      "destination": "https://localworker.onrender.com/api/:path*"
     },
     {
-      "src": "^/(?!api).*",
-      "dest": "/index.html"
+      "source": "/:path*",
+      "destination": "/index.html"
     }
-  ],
-  "functions": {
-    "frontend/dist/**": {
-      "memory": 1024,
-      "maxDuration": 60
-    }
-  }
+  ]
 }
