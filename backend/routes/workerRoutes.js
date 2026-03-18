@@ -366,14 +366,7 @@ router.post('/complete-profile', protect, upload.single('idProof'), async (req, 
     worker.longitude = longitude ? Number(longitude) : null;
     worker.profileCompleted = true;
 
-    // ID Proof is REQUIRED
-    if (!req.file) {
-      return res.status(400).json({ 
-        error: 'ID Proof upload is required. Please upload a valid Aadhaar, PAN, or Driving License.' 
-      });
-    }
-
-    // Handle file upload
+    // ID Proof is OPTIONAL for demo purposes
     if (req.file) {
       // Remove old file if exists
       if (worker.idProof) {
