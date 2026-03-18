@@ -1,6 +1,4 @@
 {
-  "projectId": "",
-  "orgId": "",
   "buildCommand": "cd frontend && npm install && npm run build",
   "outputDirectory": "frontend/dist",
   "routes": [
