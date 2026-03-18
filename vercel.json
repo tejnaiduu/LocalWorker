@@ -1,0 +1,22 @@
+{
+  "projectId": "",
+  "orgId": "",
+  "buildCommand": "cd frontend && npm install && npm run build",
+  "outputDirectory": "frontend/dist",
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "https://localworker.onrender.com/api/$1"
+    },
+    {
+      "src": "^/(?!api).*",
+      "dest": "/index.html"
+    }
+  ],
+  "functions": {
+    "frontend/dist/**": {
+      "memory": 1024,
+      "maxDuration": 60
+    }
+  }
+}
