@@ -1,5 +1,5 @@
 
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import Login from './pages/auth/Login';
 import Register from './pages/auth/Register';
@@ -474,8 +474,8 @@ function HomePage() {
           <span style={styles.navbarLogoText}>LocalWorker</span>
         </div>
         <div style={styles.navbarButtons}>
-          <a href="/login" style={styles.navbarBtnLogin}>Login</a>
-          <a href="/register" style={styles.navbarBtnRegister}>Register</a>
+          <Link to="/login" style={styles.navbarBtnLogin}>Login</Link>
+          <Link to="/register" style={styles.navbarBtnRegister}>Register</Link>
         </div>
       </nav>
 
@@ -485,8 +485,8 @@ function HomePage() {
           <h1 style={styles.heroHeadline}>Find Trusted Local Experts in Minutes</h1>
           <p style={styles.heroSubtext}>Connect with verified electricians, plumbers, carpenters and more in your neighbourhood</p>
           <div style={styles.heroButtons}>
-            <a href="/register" style={styles.heroBtnPrimary}>Get Started</a>
-            <a href="/login" style={styles.heroBtnOutline}>Sign In</a>
+            <Link to="/register" style={styles.heroBtnPrimary}>Get Started</Link>
+            <Link to="/login" style={styles.heroBtnOutline}>Sign In</Link>
           </div>
         </div>
       </section>
@@ -669,8 +669,8 @@ function HomePage() {
       <section style={styles.ctaSection}>
         <h2 style={styles.ctaTitle}>Ready to Get Started?</h2>
         <div style={styles.ctaButtons}>
-          <a href="/register" style={styles.ctaBtnPrimary}>Register as Customer</a>
-          <a href="/register" style={styles.ctaBtnOutline}>Register as Worker</a>
+          <Link to="/register" style={styles.ctaBtnPrimary}>Register as Customer</Link>
+          <Link to="/register" style={styles.ctaBtnOutline}>Register as Worker</Link>
         </div>
       </section>
 
