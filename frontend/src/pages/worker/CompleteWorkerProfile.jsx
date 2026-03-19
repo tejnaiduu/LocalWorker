@@ -118,10 +118,11 @@ export default function CompleteWorkerProfile() {
       return;
     }
 
-    if (!file) {
-      setError('ID Proof upload is required. Please upload a valid Aadhaar, PAN, or Driving License.');
-      return;
-    }
+    // ID Proof is now optional for demo purposes
+    // if (!file) {
+    //   setError('ID Proof upload is required. Please upload a valid Aadhaar, PAN, or Driving License.');
+    //   return;
+    // }
 
     try {
       setLoading(true);
@@ -142,11 +143,10 @@ export default function CompleteWorkerProfile() {
 
       const response = await api.post('/workers/complete-profile', formDataPayload);
 
-      setSuccess('✓ Profile completed successfully! Redirecting to dashboard...');
+      setSuccess('✓ Profile completed successfully!');
       
-      setTimeout(() => {
-        navigate('/worker-dashboard');
-      }, 2000);
+      // Navigate immediately without delay
+      navigate('/worker-dashboard');
     } catch (err) {
       console.error('Complete profile error:', err);
       console.error('Error response:', err.response?.data);
