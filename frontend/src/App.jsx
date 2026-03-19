@@ -476,6 +476,8 @@ function HomePage() {
         <div style={styles.navbarButtons}>
           <Link to="/login" style={styles.navbarBtnLogin}>Login</Link>
           <Link to="/register" style={styles.navbarBtnRegister}>Register</Link>
+          <Link to="/admin/login" style={styles.navbarBtnLogin}>Admin Login</Link>
+          <Link to="/admin/register" style={styles.navbarBtnRegister}>Admin Register</Link>
         </div>
       </nav>
 
