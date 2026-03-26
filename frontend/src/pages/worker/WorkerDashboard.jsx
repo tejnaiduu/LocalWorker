@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
+import BookingRequests from '../../components/booking/BookingRequests';
+import LocationMapPicker from '../../components/location/LocationMapPicker';
 import RatingStars from '../../components/rating/RatingStars';
 import StatusBadge from '../../components/shared/StatusBadge';
 import WorkerRegister from '../../components/worker/WorkerRegister';
-import BookingRequests from '../../components/booking/BookingRequests';
-import LocationMapPicker from '../../components/location/LocationMapPicker';
+import { useAuth } from '../../context/AuthContext';
 import '../shared/Dashboard.css';
 
 function WorkerDashboard() {
@@ -171,7 +171,7 @@ function WorkerDashboard() {
       setWorkerLocation({ lat, lng });
       setWorkerProfile(response.data.worker);
       setShowMapPicker(false);
-      setSuccess(`📍 Location updated: ${locationName} (${lat.toFixed(4)}, ${lng.toFixed(4)})`);
+      setSuccess(`Location updated: ${locationName} (${lat.toFixed(4)}, ${lng.toFixed(4)})`);
       setLoading(false);
       
       setTimeout(() => setSuccess(''), 3000);
@@ -214,7 +214,7 @@ function WorkerDashboard() {
       <div className="dashboard">
         <nav className="dashboard-nav">
           <div className="nav-left">
-            <h2>👷 Worker Dashboard</h2>
+            <h2>Worker Dashboard</h2>
           </div>
         </nav>
         <div className="dashboard-content" style={{ textAlign: 'center', padding: '40px' }}>
@@ -239,7 +239,7 @@ function WorkerDashboard() {
       <div className="dashboard">
         <nav className="dashboard-nav">
           <div className="nav-left">
-            <h2>👷 Worker Dashboard</h2>
+            <h2>Worker Dashboard</h2>
           </div>
           <button className="logout-btn" onClick={handleLogout}>
             Logout
@@ -259,7 +259,7 @@ function WorkerDashboard() {
     <div className="dashboard">
       <nav className="dashboard-nav">
         <div className="nav-left">
-          <h2>👷 Worker Dashboard</h2>
+          <h2>Worker Dashboard</h2>
         </div>
         <button className="logout-btn" onClick={handleLogout}>
           Logout
@@ -320,7 +320,7 @@ function WorkerDashboard() {
               <div className="location-info">
                 {workerLocation ? (
                   <div className="location-details">
-                    <p>✅ Location detected: ({workerLocation.lat.toFixed(4)}, {workerLocation.lng.toFixed(4)})</p>
+                    <p>Location detected: ({workerLocation.lat.toFixed(4)}, {workerLocation.lng.toFixed(4)})</p>
                     <p className="location-text">{workerProfile?.location || 'Not set'}</p>
                   </div>
                 ) : (
@@ -371,7 +371,7 @@ function WorkerDashboard() {
                           </span>
                         </div>
                         <div className="review-rating">
-                          {'⭐'.repeat(review.rating)}
+                          {'*'.repeat(review.rating)}
                           <span className="rating-badge">{review.rating}/5</span>
                         </div>
                       </div>
@@ -389,3 +389,7 @@ function WorkerDashboard() {
 }
 
 export default WorkerDashboard;
+
+
+
+

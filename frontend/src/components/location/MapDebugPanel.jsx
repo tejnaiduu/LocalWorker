@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './MapDebugPanel.css';
 
@@ -37,13 +37,13 @@ function MapDebugPanel() {
   const testGetLocation = () => {
     setDebugInfo(prev => ({
       ...prev,
-      errors: [...prev.errors, '🔍 Testing geolocation...'],
+      errors: [...prev.errors, ' Testing geolocation...'],
     }));
 
     if (!navigator.geolocation) {
       setDebugInfo(prev => ({
         ...prev,
-        errors: [...prev.errors, '❌ Geolocation not supported'],
+        errors: [...prev.errors, ' Geolocation not supported'],
       }));
       return;
     }
@@ -58,13 +58,13 @@ function MapDebugPanel() {
         setDebugInfo(prev => ({
           ...prev,
           userLocation: location,
-          errors: [...prev.errors, `✅ Location found: ${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`],
+          errors: [...prev.errors, ` Location found: ${location.latitude.toFixed(4)}, ${location.longitude.toFixed(4)}`],
         }));
         setTestLat(location.latitude.toString());
         setTestLng(location.longitude.toString());
       },
       (error) => {
-        const errorMsg = `❌ Geolocation error: ${error.code} - ${error.message}`;
+        const errorMsg = ` Geolocation error: ${error.code} - ${error.message}`;
         setDebugInfo(prev => ({
           ...prev,
           hasPermission: false,
@@ -78,7 +78,7 @@ function MapDebugPanel() {
   const testFetchWorkers = async () => {
     setDebugInfo(prev => ({
       ...prev,
-      errors: [...prev.errors, `📡 Testing API: /workers/nearby?lat=${testLat}&lng=${testLng}&radius=${testRadius}`],
+      errors: [...prev.errors, ` Testing API: /workers/nearby?lat=${testLat}&lng=${testLng}&radius=${testRadius}`],
     }));
 
     try {
@@ -90,11 +90,11 @@ function MapDebugPanel() {
         workers: response.data,
         errors: [
           ...prev.errors,
-          `✅ API Success! Found ${response.data.workers?.length || 0} workers`,
+          ` API Success! Found ${response.data.workers?.length || 0} workers`,
         ],
       }));
     } catch (error) {
-      let errorMsg = '❌ API Error: ';
+      let errorMsg = ' API Error: ';
       if (error.response) {
         errorMsg += `${error.response.status} - ${JSON.stringify(error.response.data)}`;
       } else if (error.request) {
@@ -113,19 +113,19 @@ function MapDebugPanel() {
   const testBackendHealth = async () => {
     setDebugInfo(prev => ({
       ...prev,
-      errors: [...prev.errors, '🔌 Testing backend connectivity...'],
+      errors: [...prev.errors, ' Testing backend connectivity...'],
     }));
 
     try {
       const response = await api.get('/health');
       setDebugInfo(prev => ({
         ...prev,
-        errors: [...prev.errors, `✅ Backend healthy: ${response.status}`],
+        errors: [...prev.errors, ` Backend healthy: ${response.status}`],
       }));
     } catch (error) {
       setDebugInfo(prev => ({
         ...prev,
-        errors: [...prev.errors, '❌ Backend unreachable. Make sure backend is running on port 5000'],
+        errors: [...prev.errors, ' Backend unreachable. Make sure backend is running on port 5000'],
       }));
     }
   };
@@ -140,14 +140,14 @@ function MapDebugPanel() {
   return (
     <div className="map-debug-panel">
       <div className="debug-header">
-        🔧 Map Debug Panel
+         Map Debug Panel
       </div>
 
       {/* Browser Support Check */}
       <div className="debug-section">
         <h4>Browser Support</h4>
         <p>
-          Geolocation: {debugInfo.browserSupport ? '✅ Supported' : '❌ Not Supported'}
+          Geolocation: {debugInfo.browserSupport ? ' Supported' : ' Not Supported'}
         </p>
       </div>
 
@@ -155,10 +155,10 @@ function MapDebugPanel() {
       <div className="debug-section">
         <h4>Quick Tests</h4>
         <button onClick={testGetLocation} className="debug-btn">
-          📍 Test Get Location
+           Test Get Location
         </button>
         <button onClick={testBackendHealth} className="debug-btn">
-          🔌 Test Backend
+           Test Backend
         </button>
       </div>
 
@@ -168,7 +168,7 @@ function MapDebugPanel() {
           <h4>Your Location</h4>
           <p>Lat: {debugInfo.userLocation.latitude.toFixed(6)}</p>
           <p>Lng: {debugInfo.userLocation.longitude.toFixed(6)}</p>
-          <p>Accuracy: ±{debugInfo.userLocation.accuracy.toFixed(0)}m</p>
+          <p>Accuracy: {debugInfo.userLocation.accuracy.toFixed(0)}m</p>
         </div>
       )}
 
@@ -204,7 +204,7 @@ function MapDebugPanel() {
           </label>
         </div>
         <button onClick={testFetchWorkers} className="debug-btn">
-          🔍 Fetch Workers
+           Fetch Workers
         </button>
       </div>
 
@@ -235,3 +235,7 @@ function MapDebugPanel() {
 }
 
 export default MapDebugPanel;
+
+
+
+

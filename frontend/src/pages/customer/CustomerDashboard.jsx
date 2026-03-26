@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../context/AuthContext';
-import WorkerCard from '../../components/worker/WorkerCard';
-import WorkerDetails from '../../components/worker/WorkerDetails';
-import EmergencyButton from '../../components/shared/EmergencyButton';
-import CustomerProfileForm from '../../components/customer/CustomerProfileForm';
 import BookingForm from '../../components/booking/BookingForm';
 import BookingHistory from '../../components/booking/BookingHistory';
+import CustomerProfileForm from '../../components/customer/CustomerProfileForm';
 import LocationMapPicker from '../../components/location/LocationMapPicker';
+import EmergencyButton from '../../components/shared/EmergencyButton';
+import WorkerCard from '../../components/worker/WorkerCard';
+import WorkerDetails from '../../components/worker/WorkerDetails';
+import { useAuth } from '../../context/AuthContext';
 import '../shared/Dashboard.css';
 
 function CustomerDashboard() {
@@ -99,7 +99,7 @@ function CustomerDashboard() {
       setCustomerLocation({ lat, lng });
       setProfileData(response.data.user);
       setShowMapPicker(false);
-      setSuccessMessage(`📍 Location: ${locationName} (${lat.toFixed(4)}, ${lng.toFixed(4)}) - Refreshing nearby workers...`);
+      setSuccessMessage(`Location: ${locationName} (${lat.toFixed(4)}, ${lng.toFixed(4)}) - Refreshing nearby workers...`);
       
       // Refetch workers after location update
       await fetchWorkers();
@@ -198,7 +198,7 @@ function CustomerDashboard() {
         const response = await api.get(url);
         setWorkers(response.data);
         setFilter(skill);
-        setSuccessMessage('⚠️ Update your location to see distance-based results!');
+        setSuccessMessage('Update your location to see distance-based results.');
       }
       setTimeout(() => setSuccessMessage(''), 3000);
     } catch (err) {
@@ -223,7 +223,7 @@ function CustomerDashboard() {
     setShowBookingForm(false);
     setSelectedWorkerForBooking(null);
     setSelectedWorker(null);
-    setSuccessMessage('✅ Booking created successfully! Check your bookings history.');
+    setSuccessMessage('Booking created successfully. Check your booking history.');
     setTimeout(() => setSuccessMessage(''), 3000);
     // Optionally refresh workers list
     fetchWorkers();
@@ -233,7 +233,7 @@ function CustomerDashboard() {
     setProfileData(updatedUser);
     setCustomerLocation({ lat: updatedUser.latitude, lng: updatedUser.longitude });
     setShowProfileForm(false);
-    setSuccessMessage('✅ Profile updated! Refreshing workers list...');
+    setSuccessMessage('Profile updated. Refreshing workers list...');
     // Refetch workers with new location
     fetchWorkers();
     setTimeout(() => setSuccessMessage(''), 3000);
@@ -270,10 +270,10 @@ function CustomerDashboard() {
             {profileData?.profilePhoto ? (
               <img src={profileData.profilePhoto} alt="Profile" className="profile-icon-img" />
             ) : (
-              <div className="profile-icon-placeholder">👤</div>
+              <div className="profile-icon-placeholder">Profile</div>
             )}
           </button>
-          
+                  X
           <div className="nav-left-text">
             <h2>Customer Dashboard</h2>
             <p>Welcome, {user.name}!</p>
@@ -290,7 +290,7 @@ function CustomerDashboard() {
                   className="modal-close"
                   onClick={() => setShowProfileModal(false)}
                 >
-                  ✕
+                  
                 </button>
               </div>
               <div className="profile-modal-content">
@@ -303,13 +303,13 @@ function CustomerDashboard() {
                   <div className="modal-details">
                     {profileData?.phone && (
                       <div className="detail-item">
-                        <span className="detail-label">📱 Phone:</span>
+                        <span className="detail-label">Phone:</span>
                         <span className="detail-value">{profileData.phone}</span>
                       </div>
                     )}
                     {profileData?.location && (
                       <div className="detail-item">
-                        <span className="detail-label">📍 Location:</span>
+                        <span className="detail-label">Location:</span>
                         <span className="detail-value">{profileData.location}</span>
                       </div>
                     )}
@@ -321,7 +321,7 @@ function CustomerDashboard() {
                       setShowProfileForm(true);
                     }}
                   >
-                    ✏️ Edit Profile
+                    Edit Profile
                   </button>
                   <button 
                     className="btn btn-primary"
@@ -330,7 +330,7 @@ function CustomerDashboard() {
                       setShowBookingHistory(true);
                     }}
                   >
-                    📅 My Bookings
+                    My Bookings
                   </button>
                 </div>
               </div>
@@ -421,7 +421,7 @@ function CustomerDashboard() {
             {customerLocation && nearbyWorkers.length > 0 && (
               <div className="nearby-workers-subsection">
                 <div className="section-header">
-                  <h3>🎯 Nearby Workers (Within 10km)</h3>
+                  <h3>Nearby Workers (Within 10km)</h3>
                   <span className="worker-count">{nearbyWorkers.length} found</span>
                 </div>
 
@@ -432,7 +432,7 @@ function CustomerDashboard() {
                       className="clear-filter-btn"
                       onClick={() => setFilter('all')}
                     >
-                      ✕ Clear
+                      Clear
                     </button>
                   </div>
                 )}
@@ -454,7 +454,7 @@ function CustomerDashboard() {
             {/* All Workers Section */}
             <div className="all-workers-subsection">
               <div className="section-header">
-                <h3>{customerLocation && nearbyWorkers.length > 0 ? '📋 All Available Workers' : '🔍 Find Workers'}</h3>
+                <h3>{customerLocation && nearbyWorkers.length > 0 ? 'All Available Workers' : 'Find Workers'}</h3>
                 <div className="filters">
                   <button
                     className={`filter-btn ${filter === 'all' ? 'active' : ''}`}
@@ -533,12 +533,12 @@ function CustomerDashboard() {
         <div className="booking-history-modal-overlay" onClick={() => setShowBookingHistory(false)}>
           <div className="booking-history-modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="booking-history-header">
-              <h2>📅 Your Bookings</h2>
+              <h2>Your Bookings</h2>
               <button 
                 className="modal-close-btn"
                 onClick={() => setShowBookingHistory(false)}
               >
-                ✕
+                X
               </button>
             </div>
             <BookingHistory />
@@ -550,3 +550,7 @@ function CustomerDashboard() {
 }
 
 export default CustomerDashboard;
+
+
+
+

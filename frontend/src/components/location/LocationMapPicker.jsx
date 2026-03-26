@@ -1,7 +1,7 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+﻿import { useState, useCallback, useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
-import '../../styles/LocationMapPicker.css';
+import './LocationMapPicker.css';
 
 // Fix for default marker icon issue in Leaflet
 delete L.Icon.Default.prototype._getIconUrl;
@@ -64,7 +64,7 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
 
       // Add OpenStreetMap tile layer
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '© OpenStreetMap contributors',
+        attribution: '(c) OpenStreetMap contributors',
         maxZoom: 19,
       }).addTo(map.current);
 
@@ -166,8 +166,8 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
     <div className="location-map-picker-overlay">
       <div className="location-map-picker-container">
         <div className="picker-header">
-          <h2>📍 Select Your Location</h2>
-          <button className="close-btn" onClick={onCancel}>✕</button>
+          <h2>Select Your Location</h2>
+          <button className="close-btn" onClick={onCancel}>X</button>
         </div>
 
         {error && <div className="error-message">{error}</div>}
@@ -190,14 +190,14 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
                 onClick={handleCurrentLocation}
                 disabled={loading}
               >
-                {loading ? '⏳ Getting location...' : '📍 Use Current Location'}
+                {loading ? 'Getting location...' : 'Use Current Location'}
               </button>
               <button
                 className="btn btn-success"
                 onClick={handleSaveLocation}
                 disabled={loading || !selectedLocation}
               >
-                {loading ? '⏳ Saving...' : '✓ Save Location'}
+                {loading ? 'Saving...' : 'Save Location'}
               </button>
               <button className="btn btn-secondary" onClick={onCancel}>
                 Cancel
@@ -211,3 +211,5 @@ const LocationMapPicker = ({ initialLocation, onLocationSelect, onCancel }) => {
 };
 
 export default LocationMapPicker;
+
+

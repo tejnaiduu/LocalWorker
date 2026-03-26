@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import '../../pages/admin/AdminPages.css';
 
@@ -106,13 +106,13 @@ const IDProofVerification = () => {
                   className="approve-btn"
                   onClick={() => handleApprove(worker._id)}
                 >
-                  ✓ Approve
+                   Approve
                 </button>
                 <button
                   className="reject-btn"
                   onClick={() => handleReject(worker._id)}
                 >
-                  ✕ Reject
+                   Reject
                 </button>
               </div>
             </div>
@@ -120,7 +120,7 @@ const IDProofVerification = () => {
         </div>
       ) : (
         <div className="no-data">
-          <p>✓ No pending ID proofs to verify</p>
+          <p> No pending ID proofs to verify</p>
         </div>
       )}
     </div>
@@ -128,3 +128,7 @@ const IDProofVerification = () => {
 };
 
 export default IDProofVerification;
+
+
+
+

@@ -23,6 +23,7 @@ const adminRoutes = require('./routes/adminRoutes');
 const bookingRoutes = require('./routes/bookingRoutes');
 const ratingRoutes = require('./routes/ratingRoutes');
 const idProofRoutes = require('./routes/idProofRoutes');
+const debugRoutes = require('./routes/debugRoutes');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/workers', workerRoutes);
@@ -31,6 +32,7 @@ app.use('/api/admin', adminRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/ratings', ratingRoutes);
 app.use('/api/idproof', idProofRoutes);
+app.use('/api/debug', debugRoutes);  // TEMPORARY: Remove before production
 
 // Health check route
 app.get('/api/health', (req, res) => {

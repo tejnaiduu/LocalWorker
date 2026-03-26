@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import LocationMapPicker from '../../components/location/LocationMapPicker';
@@ -143,7 +143,7 @@ export default function CompleteWorkerProfile() {
 
       const response = await api.post('/workers/complete-profile', formDataPayload);
 
-      setSuccess('✓ Profile completed successfully!');
+      setSuccess(' Profile completed successfully!');
       
       // Navigate immediately without delay
       navigate('/worker-dashboard');
@@ -160,11 +160,11 @@ export default function CompleteWorkerProfile() {
   return (
     <div className="complete-profile-container">
       <div className="complete-profile-card">
-        <h2>📋 Complete Your Worker Profile</h2>
+        <h2> Complete Your Worker Profile</h2>
         <p className="subtitle">You're almost done! Just a few more details and your profile will be ready for verification.</p>
 
-        {error && <div className="alert error">✗ {error}</div>}
-        {success && <div className="alert success">✓ {success}</div>}
+        {error && <div className="alert error"> {error}</div>}
+        {success && <div className="alert success"> {success}</div>}
 
         {/* User Info Display */}
         <div className="user-info-display">
@@ -194,9 +194,9 @@ export default function CompleteWorkerProfile() {
               required
             >
               <option value="">Select your skill</option>
-              <option value="plumber">🔧 Plumber</option>
-              <option value="electrician">⚡ Electrician</option>
-              <option value="carpenter">🪛 Carpenter</option>
+              <option value="plumber"> Plumber</option>
+              <option value="electrician"> Electrician</option>
+              <option value="carpenter"> Carpenter</option>
             </select>
           </div>
 
@@ -236,7 +236,7 @@ export default function CompleteWorkerProfile() {
                 disabled={fetchingLocation}
                 title="Get your current location"
               >
-                {fetchingLocation ? '📍 Fetching...' : '📍 Current Location'}
+                {fetchingLocation ? ' Fetching...' : ' Current Location'}
               </button>
               <button
                 type="button"
@@ -244,12 +244,12 @@ export default function CompleteWorkerProfile() {
                 onClick={() => setShowMapPicker(true)}
                 title="Select location on map"
               >
-                🗺️ Select on Map
+                 Select on Map
               </button>
             </div>
             {formData.location && (
               <p className="location-selected">
-                ✓ Coordinates: ({formData.latitude?.toFixed(4)}, {formData.longitude?.toFixed(4)})
+                 Coordinates: ({formData.latitude?.toFixed(4)}, {formData.longitude?.toFixed(4)})
               </p>
             )}
           </div>
@@ -269,14 +269,14 @@ export default function CompleteWorkerProfile() {
               <label htmlFor="idProof" className="file-label">
                 {file ? (
                   <>
-                    <span className="file-icon">📄</span>
+                    <span className="file-icon"></span>
                     <span className="file-info">
                       {file.name} ({(file.size / 1024).toFixed(2)} KB)
                     </span>
                   </>
                 ) : (
                   <>
-                    <span className="file-icon">📤</span>
+                    <span className="file-icon"></span>
                     <span className="file-info">Click to upload or drag and drop</span>
                   </>
                 )}
@@ -286,11 +286,11 @@ export default function CompleteWorkerProfile() {
 
           {/* Submit Button */}
           <button type="submit" className="btn-complete" disabled={loading}>
-            {loading ? '⏳ Completing Profile...' : '✓ Complete Profile'}
+            {loading ? ' Completing Profile...' : ' Complete Profile'}
           </button>
 
           <p className="info-note">
-            ℹ️ <strong>Verification Process:</strong> After submission, an admin will review your ID proof and profile details. Once approved, you'll receive full dashboard access. This typically takes 24-48 hours.
+             <strong>Verification Process:</strong> After submission, an admin will review your ID proof and profile details. Once approved, you'll receive full dashboard access. This typically takes 24-48 hours.
           </p>
         </form>
       </div>
@@ -308,3 +308,7 @@ export default function CompleteWorkerProfile() {
     </div>
   );
 }
+
+
+
+

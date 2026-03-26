@@ -51,9 +51,11 @@ const workerSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    // Note: idProofUrl is unused. Use 'idProof' field instead.
     idProofUrl: {
       type: String,
       default: null,
+      deprecated: true,
     },
     latitude: {
       type: Number,

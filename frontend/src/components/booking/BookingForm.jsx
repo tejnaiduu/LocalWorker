@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import '../../styles/BookingForm.css';
+import './BookingForm.css';
 
 const BookingForm = ({ worker, onSuccess, onCancel }) => {
   const { api } = useAuth();
@@ -57,7 +57,7 @@ const BookingForm = ({ worker, onSuccess, onCancel }) => {
   return (
     <div className="booking-form-overlay">
       <div className="booking-form-container">
-        <button className="close-btn" onClick={onCancel}>×</button>
+        <button className="close-btn" onClick={onCancel}>Ã—</button>
         
         <h2>Book {worker.name}</h2>
         <p className="worker-skill">{worker.skill}</p>
@@ -107,3 +107,7 @@ const BookingForm = ({ worker, onSuccess, onCancel }) => {
 };
 
 export default BookingForm;
+
+
+
+

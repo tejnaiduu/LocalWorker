@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+﻿import React, { useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import '../../styles/RatingForm.css';
+import './RatingForm.css';
 
 const RatingForm = ({ booking, workerName, onSuccess, onCancel }) => {
   const { api } = useAuth();
@@ -47,7 +47,7 @@ const RatingForm = ({ booking, workerName, onSuccess, onCancel }) => {
               onChange={() => setRating(star)}
             />
             <span className={`star ${star <= rating ? 'filled' : 'empty'}`}>
-              ★
+              
             </span>
           </label>
         ))}
@@ -58,7 +58,7 @@ const RatingForm = ({ booking, workerName, onSuccess, onCancel }) => {
   return (
     <div className="rating-form-overlay">
       <div className="rating-form-container">
-        <button className="close-btn" onClick={onCancel}>×</button>
+        <button className="close-btn" onClick={onCancel}></button>
         
         <h2>Rate {workerName}</h2>
         <p className="form-subtitle">How was your experience?</p>
@@ -107,3 +107,8 @@ const RatingForm = ({ booking, workerName, onSuccess, onCancel }) => {
 };
 
 export default RatingForm;
+
+
+
+
+

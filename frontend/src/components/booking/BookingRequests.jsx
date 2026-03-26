@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import '../../styles/BookingRequests.css';
+import './BookingRequests.css';
 
 const BookingRequests = () => {
   const { api } = useAuth();
@@ -18,9 +18,9 @@ const BookingRequests = () => {
     
     return (
       <span className="stars">
-        {'★'.repeat(fullStars)}
-        {hasHalfStar && '⯪'}
-        {'☆'.repeat(emptyStars)}
+        {'*'.repeat(fullStars)}
+        {hasHalfStar && '+'}
+        {'-'.repeat(emptyStars)}
       </span>
     );
   };
@@ -47,7 +47,7 @@ const BookingRequests = () => {
     try {
       setError('');
       const response = await api.put(`/bookings/${bookingId}`, { status: 'accepted' });
-      setSuccess('✅ Booking accepted! Customer will be notified.');
+      setSuccess('Booking accepted. Customer will be notified.');
       
       // Update local state
       setBookings(bookings.map(b => 
@@ -64,7 +64,7 @@ const BookingRequests = () => {
     try {
       setError('');
       const response = await api.put(`/bookings/${bookingId}`, { status: 'rejected' });
-      setSuccess('❌ Booking rejected. Customer will be notified.');
+      setSuccess('Booking rejected. Customer will be notified.');
       
       // Update local state
       setBookings(bookings.map(b => 
@@ -81,7 +81,7 @@ const BookingRequests = () => {
     try {
       setError('');
       const response = await api.put(`/bookings/${bookingId}`, { status: 'completed' });
-      setSuccess('✅ Booking marked as completed!');
+      setSuccess('Booking marked as completed.');
       
       // Update local state
       setBookings(bookings.map(b => 
@@ -123,7 +123,7 @@ const BookingRequests = () => {
   return (
     <div className="booking-requests-container">
       <div className="booking-requests-header">
-        <h2>📋 Booking Requests</h2>
+        <h2>Booking Requests</h2>
         <p className="booking-summary">
           <span className="badge pending">{pendingRequests.length} Pending</span>
           <span className="badge accepted">{acceptedBookings.length} Accepted</span>
@@ -253,7 +253,7 @@ const BookingRequests = () => {
                   </div>
                 ) : (
                   <div className="no-rating-info">
-                    <span className="rating-stars">★★☆☆☆</span>
+                    <span className="rating-stars">**---</span>
                     <span>No reviews yet - Build your profile!</span>
                   </div>
                 )}
@@ -300,3 +300,8 @@ const BookingRequests = () => {
 };
 
 export default BookingRequests;
+
+
+
+
+

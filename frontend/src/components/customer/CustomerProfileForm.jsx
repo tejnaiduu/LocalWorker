@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import LocationMapPicker from '../location/LocationMapPicker';
 import './CustomerProfileForm.css';
@@ -175,7 +175,7 @@ function CustomerProfileForm({ onSuccess, onCancel }) {
                 disabled={fetchingLocation}
                 title="Fetch your current location"
               >
-                {fetchingLocation ? '📍 Fetching...' : '📍 Fetch Location'}
+                {fetchingLocation ? ' Fetching...' : ' Fetch Location'}
               </button>
               <button
                 type="button"
@@ -183,14 +183,14 @@ function CustomerProfileForm({ onSuccess, onCancel }) {
                 onClick={() => setShowMapPicker(true)}
                 title="Select location on map"
               >
-                🗺️ Select on Map
+                 Select on Map
               </button>
             </div>
             {locationStatus && (
               <div className={`location-status-message location-${locationStatus}`}>
-                {locationStatus === 'loading' && '🔍 Detecting your location...'}
-                {locationStatus === 'success' && '✅ Location updated successfully!'}
-                {locationStatus === 'error' && '⚠️ Failed to fetch location'}
+                {locationStatus === 'loading' && ' Detecting your location...'}
+                {locationStatus === 'success' && ' Location updated successfully!'}
+                {locationStatus === 'error' && ' Failed to fetch location'}
               </div>
             )}
           </div>
@@ -246,3 +246,7 @@ function CustomerProfileForm({ onSuccess, onCancel }) {
 }
 
 export default CustomerProfileForm;
+
+
+
+

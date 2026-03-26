@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './AdminPages.css';
 
@@ -60,7 +60,7 @@ function WorkerVerification() {
   return (
     <div className="admin-page">
       <div className="page-header">
-        <h1>✅ Worker Verification</h1>
+        <h1> Worker Verification</h1>
         <span className="badge">{workers.length} Pending</span>
       </div>
 
@@ -69,7 +69,7 @@ function WorkerVerification() {
 
       {workers.length === 0 ? (
         <div className="empty-state">
-          <p>🎉 All workers have been verified!</p>
+          <p> All workers have been verified!</p>
         </div>
       ) : (
         <div className="workers-list">
@@ -90,7 +90,7 @@ function WorkerVerification() {
                 <div className="id-proof">
                   <p><strong>ID Proof:</strong></p>
                   <a href={worker.idProof} target="_blank" rel="noopener noreferrer" className="id-proof-link">
-                    📄 View Document
+                     View Document
                   </a>
                 </div>
               )}
@@ -100,13 +100,13 @@ function WorkerVerification() {
                   className="btn btn-approve"
                   onClick={() => handleApprove(worker._id)}
                 >
-                  ✅ Approve
+                   Approve
                 </button>
                 <button 
                   className="btn btn-reject"
                   onClick={() => handleReject(worker._id)}
                 >
-                  ❌ Reject
+                   Reject
                 </button>
               </div>
             </div>
@@ -118,3 +118,7 @@ function WorkerVerification() {
 }
 
 export default WorkerVerification;
+
+
+
+

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './AdminPages.css';
 
@@ -47,7 +47,7 @@ function ManageUsers() {
   return (
     <div className="admin-page">
       <div className="page-header">
-        <h1>👥 Manage Users</h1>
+        <h1> Manage Users</h1>
         <span className="badge">{users.length} Total</span>
       </div>
 
@@ -89,7 +89,7 @@ function ManageUsers() {
                       onClick={() => handleDelete(user._id)}
                       title="Delete Customer"
                     >
-                      🗑️ Delete
+                       Delete
                     </button>
                   </td>
                 </tr>
@@ -103,3 +103,7 @@ function ManageUsers() {
 }
 
 export default ManageUsers;
+
+
+
+

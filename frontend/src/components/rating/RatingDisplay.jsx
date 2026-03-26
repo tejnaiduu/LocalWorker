@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import '../../styles/RatingDisplay.css';
+import './RatingDisplay.css';
 
 const RatingDisplay = ({ workerId, averageRating = 0, totalReviews = 0 }) => {
   const { api } = useAuth();
@@ -34,7 +34,7 @@ const RatingDisplay = ({ workerId, averageRating = 0, totalReviews = 0 }) => {
             key={star}
             className={`star ${star <= stars ? 'filled' : 'empty'}`}
           >
-            ★
+            
           </span>
         ))}
       </div>
@@ -88,3 +88,8 @@ const RatingDisplay = ({ workerId, averageRating = 0, totalReviews = 0 }) => {
 };
 
 export default RatingDisplay;
+
+
+
+
+

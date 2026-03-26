@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './AdminDashboard.css';
@@ -159,22 +159,22 @@ function AdminDashboard() {
             <div className="quick-action-item" onClick={() => navigate('/admin/verification')}>
               <span className="quick-action-icon"></span>
               <span className="quick-action-text">Verify workers and manage their status</span>
-              <span className="quick-action-arrow">→</span>
+              <span className="quick-action-arrow"></span>
             </div>
             <div className="quick-action-item" onClick={() => navigate('/admin/workers')}>
               <span className="quick-action-icon"></span>
               <span className="quick-action-text">View and manage all workers</span>
-              <span className="quick-action-arrow">→</span>
+              <span className="quick-action-arrow"></span>
             </div>
             <div className="quick-action-item" onClick={() => navigate('/admin/users')}>
               <span className="quick-action-icon"></span>
               <span className="quick-action-text">View and manage all customers</span>
-              <span className="quick-action-arrow">→</span>
+              <span className="quick-action-arrow"></span>
             </div>
             <div className="quick-action-item" onClick={() => navigate('/admin/idproof-verification')}>
               <span className="quick-action-icon"></span>
               <span className="quick-action-text">Monitor worker compliance</span>
-              <span className="quick-action-arrow">→</span>
+              <span className="quick-action-arrow"></span>
             </div>
           </div>
         </div>
@@ -184,3 +184,7 @@ function AdminDashboard() {
 }
 
 export default AdminDashboard;
+
+
+
+

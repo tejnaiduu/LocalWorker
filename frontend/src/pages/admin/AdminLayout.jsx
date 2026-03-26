@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate, Outlet, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import './AdminLayout.css';
@@ -86,7 +86,7 @@ function AdminLayout() {
             onClick={() => setSidebarOpen(!sidebarOpen)}
             title="Toggle Sidebar"
           >
-            {sidebarOpen ? '◀' : '▶'}
+            {sidebarOpen ? '' : ''}
           </button>
         </div>
 
@@ -125,3 +125,7 @@ function AdminLayout() {
 }
 
 export default AdminLayout;
+
+
+
+

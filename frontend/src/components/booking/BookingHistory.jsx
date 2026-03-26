@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import RatingForm from '../rating/RatingForm';
-import '../../styles/BookingHistory.css';
+import './BookingHistory.css';
 
 const BookingHistory = () => {
   const { api } = useAuth();
@@ -188,8 +188,8 @@ const BookingHistory = () => {
                 {booking.workerId.averageRating > 0 ? (
                   <div className="worker-rating-info">
                     <div className="rating-stars">
-                      {'⭐'.repeat(Math.floor(booking.workerId.averageRating))}
-                      {booking.workerId.averageRating % 1 > 0 && '✨'}
+                      {''.repeat(Math.floor(booking.workerId.averageRating))}
+                      {booking.workerId.averageRating % 1 > 0 && ''}
                     </div>
                     <div className="rating-text">
                       <strong>{booking.workerId.averageRating.toFixed(1)}</strong>
@@ -197,7 +197,7 @@ const BookingHistory = () => {
                     </div>
                   </div>
                 ) : (
-                  <div className="no-rating-yet">⭐ No ratings yet</div>
+                  <div className="no-rating-yet"> No ratings yet</div>
                 )}
               </div>
 
@@ -229,7 +229,7 @@ const BookingHistory = () => {
                       {workerReviews[booking.workerId._id].map((review, idx) => (
                         <div key={idx} className="review-item-booking">
                           <div className="review-header-booking">
-                            <span className="review-rating">{'⭐'.repeat(review.rating)}</span>
+                            <span className="review-rating">{''.repeat(review.rating)}</span>
                             <span className="review-date">
                               {new Date(review.createdAt).toLocaleDateString()}
                             </span>
@@ -284,7 +284,7 @@ const BookingHistory = () => {
                   className="reviews-toggle-btn"
                   onClick={() => toggleReviews(booking._id, booking.workerId._id)}
                 >
-                  {expandedBookings[booking._id] ? '🔼 Hide Reviews' : '👥 View Reviews'}
+                  {expandedBookings[booking._id] ? ' Hide Reviews' : ' View Reviews'}
                 </button>
               </div>
             </div>
@@ -298,3 +298,8 @@ const BookingHistory = () => {
 };
 
 export default BookingHistory;
+
+
+
+
+

@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+﻿import { useState, useRef, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import LocationMapPicker from '../location/LocationMapPicker';
 import IDProofUpload from '../idProof/IDProofUpload';
@@ -167,7 +167,7 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
       <div className="register-card">
         {showIdProofUpload ? (
           <>
-            <h2>📋 Upload ID Proof for Verification</h2>
+            <h2> Upload ID Proof for Verification</h2>
             <p className="subtitle">Complete your profile by uploading a valid ID proof (Aadhaar, PAN, or Driving License)</p>
             <IDProofUpload onClose={() => {
               setShowIdProofUpload(false);
@@ -180,13 +180,13 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
             
             {success && (
               <div className="alert success">
-                ✓ Profile saved successfully!
+                 Profile saved successfully!
               </div>
             )}
 
             {error && (
               <div className="alert error">
-                ✗ {error}
+                 {error}
               </div>
             )}
 
@@ -266,7 +266,7 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
                 disabled={fetchingLocation}
                 title="Fetch your current location"
               >
-                {fetchingLocation ? '📍 Fetching...' : '📍 Fetch Location'}
+                {fetchingLocation ? ' Fetching...' : ' Fetch Location'}
               </button>
               <button
                 type="button"
@@ -274,14 +274,14 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
                 onClick={() => setShowMapPicker(true)}
                 title="Select location on map"
               >
-                🗺️ Select on Map
+                 Select on Map
               </button>
             </div>
             {locationStatus && (
               <div className={`location-status-message location-${locationStatus}`}>
-                {locationStatus === 'loading' && '🔍 Detecting your location...'}
-                {locationStatus === 'success' && '✅ Location updated successfully!'}
-                {locationStatus === 'error' && '⚠️ Failed to fetch location'}
+                {locationStatus === 'loading' && ' Detecting your location...'}
+                {locationStatus === 'success' && ' Location updated successfully!'}
+                {locationStatus === 'error' && ' Failed to fetch location'}
               </div>
             )}
           </div>
@@ -310,3 +310,7 @@ export default function WorkerRegister({ workerId, onSuccess, onCancel }) {
     </div>
   );
 }
+
+
+
+

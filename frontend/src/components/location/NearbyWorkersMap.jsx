@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+﻿import { useState, useEffect, useCallback } from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { useAuth } from '../../context/AuthContext';
 import './NearbyWorkersMap.css';
@@ -14,20 +14,20 @@ function NearbyWorkersMap({ skill = null, radius = 5 }) {
 
   // Get user's current location
   useEffect(() => {
-    console.log('🔍 Attempting to get user location...');
+    console.log(' Attempting to get user location...');
     
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
           const location = { lat: latitude, lng: longitude };
-          console.log('✅ Location found:', location);
+          console.log(' Location found:', location);
           setUserLocation(location);
           setMapCenter(location);
           setLoading(false); // Stop loading once we have location
         },
         (error) => {
-          console.error('❌ Geolocation error:', error.code, error.message);
+          console.error(' Geolocation error:', error.code, error.message);
           console.log('Using default location (Delhi)');
           setError(`Location access: ${error.message}. Using default location.`);
           setLoading(false); // Stop loading even with error
@@ -40,7 +40,7 @@ function NearbyWorkersMap({ skill = null, radius = 5 }) {
         }
       );
     } else {
-      console.error('❌ Geolocation not supported');
+      console.error(' Geolocation not supported');
       setError('Geolocation is not supported by your browser.');
       setLoading(false);
     }
@@ -50,7 +50,7 @@ function NearbyWorkersMap({ skill = null, radius = 5 }) {
   useEffect(() => {
     if (!userLocation && mapCenter === { lat: 28.7041, lng: 77.1025 }) {
       // Only fetch if we have actual user location OR default was used
-      console.log('⏳ Waiting for valid location...');
+      console.log(' Waiting for valid location...');
       return;
     }
 
@@ -62,24 +62,24 @@ function NearbyWorkersMap({ skill = null, radius = 5 }) {
         const currentLat = userLocation?.lat || mapCenter.lat;
         const currentLng = userLocation?.lng || mapCenter.lng;
 
-        console.log('📍 Fetching workers near:', { lat: currentLat, lng: currentLng, radius });
+        console.log(' Fetching workers near:', { lat: currentLat, lng: currentLng, radius });
 
         let url = `/workers/nearby?lat=${currentLat}&lng=${currentLng}&radius=${radius}`;
         if (skill) {
           url += `&skill=${skill}`;
         }
 
-        console.log('📡 API Request:', url);
+        console.log(' API Request:', url);
         const response = await api.get(url);
         
-        console.log('✅ Workers fetched:', response.data);
+        console.log(' Workers fetched:', response.data);
         setWorkers(response.data.workers || []);
         
         if (!response.data.workers || response.data.workers.length === 0) {
-          console.warn('⚠️ No workers found in response');
+          console.warn(' No workers found in response');
         }
       } catch (err) {
-        console.error('❌ Error fetching workers:', {
+        console.error(' Error fetching workers:', {
           status: err.response?.status,
           error: err.response?.data?.error,
           message: err.message,
@@ -127,11 +127,11 @@ function NearbyWorkersMap({ skill = null, radius = 5 }) {
       <div className="location-status">
         {userLocation ? (
           <div className="location-found">
-            ✅ Location detected: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
+             Location detected: {userLocation.lat.toFixed(4)}, {userLocation.lng.toFixed(4)}
           </div>
         ) : (
           <div className="location-searching">
-            🔍 Searching for your location... Make sure location permission is enabled in your browser.
+             Searching for your location... Make sure location permission is enabled in your browser.
           </div>
         )}
       </div>
@@ -217,7 +217,7 @@ function NearbyWorkersMap({ skill = null, radius = 5 }) {
                   )}
                   {selectedWorker.averageRating > 0 && (
                     <p>
-                      <strong>Rating:</strong> ⭐ {selectedWorker.averageRating.toFixed(1)}/5 (
+                      <strong>Rating:</strong>  {selectedWorker.averageRating.toFixed(1)}/5 (
                       {selectedWorker.totalReviews} reviews)
                     </p>
                   )}
@@ -227,7 +227,7 @@ function NearbyWorkersMap({ skill = null, radius = 5 }) {
                     className="call-btn"
                     onClick={() => handleCallWorker(selectedWorker.phone)}
                   >
-                    📞 Call Now
+                     Call Now
                   </button>
                 )}
               </div>
@@ -246,10 +246,10 @@ function NearbyWorkersMap({ skill = null, radius = 5 }) {
                 <div className="worker-info-compact">
                   <h4>{worker.name || 'Unnamed Worker'}</h4>
                   <p className="skill">{worker.skill}</p>
-                  <p className="distance">📍 {worker.distance.toFixed(1)} km away</p>
-                  <p className="phone">📱 {worker.phone || 'No phone'}</p>
+                  <p className="distance"> {worker.distance.toFixed(1)} km away</p>
+                  <p className="phone"> {worker.phone || 'No phone'}</p>
                   {worker.averageRating > 0 && (
-                    <p className="rating">⭐ {worker.averageRating.toFixed(1)}/5</p>
+                    <p className="rating"> {worker.averageRating.toFixed(1)}/5</p>
                   )}
                 </div>
                 <button
@@ -274,3 +274,7 @@ function NearbyWorkersMap({ skill = null, radius = 5 }) {
 }
 
 export default NearbyWorkersMap;
+
+
+
+

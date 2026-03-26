@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import axios from 'axios';
 import BookingForm from '../booking/BookingForm';
 import RatingDisplay from '../rating/RatingDisplay';
-import '../../styles/WorkerBrowser.css';
+import './WorkerBrowser.css';
 
 const WorkerBrowser = () => {
   const { api } = useAuth();
@@ -128,7 +128,7 @@ const WorkerBrowser = () => {
                   <p>
                     <strong>Verified:</strong>{' '}
                     <span className="verified-badge">
-                      {worker.verified ? '✓ Verified' : 'Pending Verification'}
+                      {worker.verified ? ' Verified' : 'Pending Verification'}
                     </span>
                   </p>
                 </div>
@@ -158,3 +158,8 @@ const WorkerBrowser = () => {
 };
 
 export default WorkerBrowser;
+
+
+
+
+

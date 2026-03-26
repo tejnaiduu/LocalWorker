@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
-import '../../styles/IDProofUpload.css';
+import './IDProofUpload.css';
 
 const IDProofUpload = ({ onClose }) => {
   const { api } = useAuth();
@@ -116,14 +116,14 @@ const IDProofUpload = ({ onClose }) => {
                   workerData.idProofApproved ? 'approved' : 'pending'
                 }`}
               >
-                {workerData.idProofApproved ? '✓ Approved' : '⏳ Pending Approval'}
+                {workerData.idProofApproved ? ' Approved' : ' Pending Approval'}
               </span>
             </p>
           </div>
 
           {workerData.idProofApproved && (
             <div className="approval-message">
-              <p>✓ Your ID proof has been verified and approved by admin.</p>
+              <p> Your ID proof has been verified and approved by admin.</p>
             </div>
           )}
 
@@ -139,7 +139,7 @@ const IDProofUpload = ({ onClose }) => {
         <div className="form-group">
           <label htmlFor="idProofFile" className="file-label">
             <div className="file-input-wrapper">
-              <div className="file-icon">📄</div>
+              <div className="file-icon"></div>
               <p className="label-text">
                 {file ? (
                   <>
@@ -169,9 +169,9 @@ const IDProofUpload = ({ onClose }) => {
         </div>
 
         <div className="form-info">
-          <p>✓ Accepted formats: JPG, PNG, PDF</p>
-          <p>✓ Maximum file size: 5MB</p>
-          <p>✓ Admin approval required before profile display</p>
+          <p> Accepted formats: JPG, PNG, PDF</p>
+          <p> Maximum file size: 5MB</p>
+          <p> Admin approval required before profile display</p>
         </div>
 
         <button
@@ -209,3 +209,8 @@ const IDProofUpload = ({ onClose }) => {
 };
 
 export default IDProofUpload;
+
+
+
+
+

@@ -93,10 +93,12 @@ router.post('/upload', protect, upload.single('idProof'), async (req, res) => {
 router.get('/pending', protect, authorizeAdmin, async (req, res) => {
   try {
     const workers = await Worker.find({
-      $or: [
-        { idProof: { $ne: null }, idProofApproved: false },
-      ],
-    }).select('name skill phone location idProof verified createdAt');
+      idProof: { $ne: null },
+      idProofApproved: false,
+    })
+      .populate('userId', 'name email phone')
+      .select('skill phone location idProof verified profileCompleted createdAt')
+      .sort({ createdAt: -1 });
 
     res.status(200).json({
       success: true,

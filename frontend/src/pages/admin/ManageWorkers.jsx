@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+﻿import { useEffect, useState } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import './AdminPages.css';
 
@@ -55,7 +55,7 @@ function ManageWorkers() {
   return (
     <div className="admin-page">
       <div className="page-header">
-        <h1>👷 Manage Workers</h1>
+        <h1> Manage Workers</h1>
         <span className="badge">{workers.length} Total</span>
       </div>
 
@@ -107,13 +107,13 @@ function ManageWorkers() {
                   <td>{worker.experience || 0} yrs</td>
                   <td>
                     <span className="rating">
-                      {"⭐".repeat(Math.floor(worker.averageRating || 0))}
+                      {"".repeat(Math.floor(worker.averageRating || 0))}
                       {worker.averageRating ? ` ${worker.averageRating.toFixed(1)}` : 'N/A'}
                     </span>
                   </td>
                   <td>
                     <span className={`status-badge ${worker.verified ? 'verified' : 'unverified'}`}>
-                      {worker.verified ? '✅ Verified' : '⏳ Pending'}
+                      {worker.verified ? ' Verified' : ' Pending'}
                     </span>
                   </td>
                   <td>
@@ -122,7 +122,7 @@ function ManageWorkers() {
                       onClick={() => handleDelete(worker._id)}
                       title="Delete Worker"
                     >
-                      🗑️ Delete
+                       Delete
                     </button>
                   </td>
                 </tr>
@@ -136,3 +136,7 @@ function ManageWorkers() {
 }
 
 export default ManageWorkers;
+
+
+
+
